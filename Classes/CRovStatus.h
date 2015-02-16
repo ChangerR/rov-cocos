@@ -23,12 +23,12 @@ public:
 			return *this;
 		}
 
-		double HDGD; //Compass heading in degrees
-		double DEAP; //Depth in meters
-		double ROLL; //Roll in degrees
-		double PITC; //Pitch in degrees
-		double YAW; //Yaw in degrees
-		double FTHR; //% of power in forward thrust
+		float HDGD; //Compass heading in degrees
+		float DEAP; //Depth in meters
+		float ROLL; //Roll in degrees
+		float PITC; //Pitch in degrees
+		float YAW; //Yaw in degrees
+		float FTHR; //% of power in forward thrust
 	};
 
 	class capedata {
@@ -42,14 +42,14 @@ public:
 			return *this;
 		}
 
-		double PRES; //Pressure in millibars
-		double TEMP; //Temperature in C
-		double FMEM; //Free memory on the Arduino in bytes
+		float PRES; //Pressure in millibars
+		float TEMP; //Temperature in C
+		float FMEM; //Free memory on the Arduino in bytes
 		double VOUT; //Voltage as meassed at the cape in milli-volts
 		double IOUT; //Current measured in to the cape in milli-amps.
 		double ATMP; //Arduino internal temp in Cellcius (should not get above ~86)
 		stringc VER;  //version number of the OpenRov firmware
-		double UTIM; //up-time since Arduino was started in milliseconds
+		float UTIM; //up-time since Arduino was started in milliseconds
 		bool MATC; //Motors on-line indicator
 		int CMNT; //Camera Mount X Rotation in milliseconds
 		int CMTG; //Camera Mount X Target Rotation in milliseconds
@@ -75,6 +75,17 @@ public:
 	static CRovStatus* create();
 
 private:
+
+	void drawZero();
+
+	void drawRoll();
+
+	void drawSpeed();
+
+	void drawAltitude();
+
+	void drawHorizon();
+
 	navdata _navdata;
 	capedata _capedate;
 	cocos2d::ui::Text* _status;
