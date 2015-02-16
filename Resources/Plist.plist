@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>none.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{490,0},{1,1}}</string>
+				<key>offset</key>
+				<string>{49,-49}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>right.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>right_red.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{98,0},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>setting.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{289,196},{80,80}}</string>
+				<key>offset</key>
+				<string>{1,1}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>CloseNormal.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{369,196},{40,40}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{40,40}</string>
+			</dict>
+			<key>CloseSelected.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{409,196},{37,37}}</string>
+				<key>offset</key>
+				<string>{0,1}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{40,40}</string>
+			</dict>
+			<key>down.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{196,0},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>down_red.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{294,0},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>left.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{392,0},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>left_red.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,98},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>lift.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{98,98},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>lift_down.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{196,98},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>lift_down_red.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{294,98},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>lift_red.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{392,98},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>setting_sel.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{196,196},{93,91}}</string>
+				<key>offset</key>
+				<string>{0,3}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>up.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,196},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+			<key>up_red.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{98,196},{98,98}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,100}</string>
+			</dict>
+		</dict>
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>textureFileName</key>
+			<string>Plist.png</string>
+			<key>realTextureFileName</key>
+			<string>Plist.png</string>
+			<key>size</key>
+			<string>{491,294}</string>
+		</dict>
+		<key>texture</key>
+		<dict>
+			<key>width</key>
+			<integer>491</integer>
+			<key>height</key>
+			<integer>294</integer>
+		</dict>
+	</dict>
+</plist>
