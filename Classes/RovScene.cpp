@@ -222,6 +222,13 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 		b_exit->addClickEventListener(CC_CALLBACK_1(RovScene::endEvent, this));
 		this->addChild(b_exit, 8);
 	}
+	auto key_listener = EventListenerKeyboard::create();
+	if (key_listener)
+	{
+		key_listener->onKeyPressed = CC_CALLBACK_2(RovScene::onKeyPressed, this);
+		key_listener->onKeyReleased = CC_CALLBACK_2(RovScene::onKeyReleased, this);
+		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
+	}
     return true;
 }
 
@@ -493,56 +500,69 @@ void RovScene::onCameraDownEvent(Ref *pSender)
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-/*
-void RovScene::touchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
+void RovScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	switch (type)
+	if (!m_rovCtrl)
+		return;
+
+	switch (keyCode)
 	{
-	case cocos2d::ui::Widget::TouchEventType::BEGAN:
-		
+	case EventKeyboard::KeyCode::KEY_UP_ARROW:
+		m_rovCtrl->setPosition(FORWARD_VALUE, 0, 0);
 		break;
-
-	case cocos2d::ui::Widget::TouchEventType::MOVED:
-		
+	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+		m_rovCtrl->setPosition(BACK_VALUE, 0, 0);
 		break;
-
-	case cocos2d::ui::Widget::TouchEventType::ENDED:
-		Director::getInstance()->end();
+	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+		m_rovCtrl->setPosition(0, LEFT_VALUE, 0);
 		break;
-
-	case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+		m_rovCtrl->setPosition(0, RIGHT_VALUE, 0);
 		break;
-
+	case EventKeyboard::KeyCode::KEY_LEFT_SHIFT:
+		m_rovCtrl->setPosition(0, 0, UP_VALUE);
+		break;
+	case EventKeyboard::KeyCode::KEY_LEFT_CTRL:
+		m_rovCtrl->setPosition(0, 0, DOWN_VALUE);
+		break;
 	default:
 		break;
 	}
 }
-*/
 
-/*
-void RovScene::menuCloseCallback(Ref* pSender)
+void RovScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
-return;
-#endif
+	if (!m_rovCtrl)
+		return;
 
-Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-exit(0);
-#endif
+	switch (keyCode)
+	{
+	case EventKeyboard::KeyCode::KEY_UP_ARROW:
+		m_rovCtrl->setPosition(0, 0, 0);
+		break;
+	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+		m_rovCtrl->setPosition(0, 0, 0);
+		break;
+	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+		m_rovCtrl->setPosition(0, 0, 0);
+		break;
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+		m_rovCtrl->setPosition(0, 0, 0);
+		break;
+	case EventKeyboard::KeyCode::KEY_LEFT_SHIFT:
+		m_rovCtrl->setPosition(0, 0, 0);
+		break;
+	case EventKeyboard::KeyCode::KEY_LEFT_CTRL:
+		m_rovCtrl->setPosition(0, 0, 0);
+		break;
+	default:
+		break;
+	}
 }
-*/
+
+
+
+
+
+
 

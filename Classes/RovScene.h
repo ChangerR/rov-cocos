@@ -47,6 +47,10 @@ public:
 
 	void onBtnDiveTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
 
+	virtual void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+
+	virtual void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+
     // implement the "static create()" method manually
 	static RovScene* create(const char* url, bool show_ctrl);
 
