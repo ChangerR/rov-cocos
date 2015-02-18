@@ -35,9 +35,8 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto status = CRovStatus::create();
-	status->setContentSize(visibleSize);
-	addChild(status, 2);
+	//auto status = CRovStatus::create(visibleSize);
+	//addChild(status, 2);
 
 	if (_check_is_ip(ip))
 	{
@@ -47,8 +46,7 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 		m_rovCtrl = show_ctrl ? new CRovControler(this,url + ":8080/", 200):NULL;
 
 		if (m_rovCtrl){
-			auto status = CRovStatus::create();
-			status->setContentSize(visibleSize);
+			auto status = CRovStatus::create(visibleSize);
 			addChild(status, 2);
 			m_rovCtrl->setRovStatus(status);
 		}

@@ -11,7 +11,7 @@ class CRovStatus :
 public:
 	class navdata{
 	public:
-		navdata() :HDGD(0.0),DEAP(0.f),ROLL(0.f),PITC(0.f),YAW(0.f),FTHR(0.f){}
+		navdata() :HDGD(.0f),DEAP(0.f),ROLL(0.f),PITC(0.f),YAW(0.f),FTHR(0.f){}
 
 		const navdata& operator = (const navdata& nav) {
 			HDGD = nav.HDGD;
@@ -64,7 +64,7 @@ public:
 
 	void updateCapeDate(capedata& cape);
 
-	bool init();
+	bool init(const cocos2d::Size& _si);
 
 	void visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags);
 
@@ -72,7 +72,7 @@ public:
 
 	void onDraw(const cocos2d::Mat4 &transform, uint32_t flags);
 
-	static CRovStatus* create();
+	static CRovStatus* create(const cocos2d::Size& _si);
 
 private:
 
@@ -92,6 +92,7 @@ private:
 	cocos2d::CustomCommand _customCommand;
 	NVGcontext* _vg;
 	int _font_face;
+	cocos2d::Sprite* _campass;
 };
 
 #endif

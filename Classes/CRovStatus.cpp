@@ -8,11 +8,16 @@
 
 CRovStatus::CRovStatus() :_status(0), _vg(0)
 {
+
 }
 
 
 CRovStatus::~CRovStatus()
 {
+	if (_vg) {
+		nvgDeleteGLES2(_vg);
+	}
+	CC_SAFE_RELEASE(_campass);
 	CC_SAFE_RELEASE(_status);
 }
 
@@ -26,7 +31,7 @@ void CRovStatus::updateCapeDate(capedata& cape)
 	_capedate = cape;
 }
 
-bool CRovStatus::init()
+bool CRovStatus::init(const cocos2d::Size& _si)
 {
 	_vg = nvgCreateGLES2(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
 	_font_face = nvgCreateFont(_vg, "arial", "fonts/arial.ttf");
@@ -34,7 +39,22 @@ bool CRovStatus::init()
 	{
 		return false;
 	}
-	
+	setContentSize(_si);
+	_campass = cocos2d::Sprite::create("campass.png");
+	if (_campass) {	
+		_campass->setAnchorPoint(cocos2d::Vec2(0.5f, 0));
+		_campass->setPosition(cocos2d::Vec2(_contentSize.width / 2, 0));
+		CC_SAFE_RETAIN(_campass);
+		addChild(_campass, 1);
+	}
+
+	auto arrow = cocos2d::Sprite::create("arrow.png");
+	if (arrow)
+	{
+		arrow->setAnchorPoint(cocos2d::Vec2(0.5f, 1.f));
+		arrow->setPosition(cocos2d::Vec2(_contentSize.width / 2, _campass->getContentSize().height));
+		addChild(arrow, 2);
+	}
 	//_status = cocos2d::ui::Text::create("V:0 I:0", "Arial", 20);
 	//CC_SAFE_RETAIN(_status);
 	//_status->setAnchorPoint(cocos2d::Vec2(0.f, 0.f));
@@ -44,10 +64,10 @@ bool CRovStatus::init()
 	return true;
 }
 
-CRovStatus* CRovStatus::create()
+CRovStatus* CRovStatus::create(const cocos2d::Size& _si)
 {
 	CRovStatus *pRet = new CRovStatus();
-	if (pRet && pRet->init())
+	if (pRet && pRet->init(_si))
 	{
 		pRet->autorelease();
 		return pRet;
@@ -62,10 +82,18 @@ CRovStatus* CRovStatus::create()
 
 void CRovStatus::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags)
 {
-	char tmp[64]{0};
+	/*char tmp[64]{0};
 	sprintf(tmp, "V:%.2f I:%.2f", float(_capedate.VOUT), float(_capedate.IOUT));
 	if (_status)
-		_status->setString(tmp);
+		_status->setString(tmp);*/
+	float angle = _navdata.HDGD;
+	while (angle > 180) {
+		angle -= 360;
+	}
+	while (angle < -180) {
+		angle += 360;
+	}
+	_campass->setAnchorPoint(cocos2d::Vec2(0.5f + angle * (0.25f / 180),0.f));
 
 	Node::visit(renderer, parentTransform, parentFlags);
 }
@@ -93,6 +121,7 @@ void CRovStatus::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 	drawSpeed();
 
 	drawAltitude();
+
 	///////////////////////////////////////////////////
 	nvgEndFrame(_vg);
 	cocos2d::GL::bindTexture2D(0);
@@ -100,6 +129,7 @@ void CRovStatus::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 
 	cocos2d::GL::useProgram(0);
 }
+
 const static  float zeroWidth = 100.f, zeroGap = 10.f, radialRadius = 178.f, radialLimit = 60.f,
 tickRadius = 10.f, zeroPadding = 100.f, speedIndicatorHeight = 250.f, speedIndicatorWidth = 60.f,
 speedAltOpacity = 0.2f, pixelsPer10Kmph = 50.f, yellowBoundarySpeed = 100.f, speedWarningWidth = 10.f, redBoundarySpeed = 130.f,
@@ -140,7 +170,7 @@ void CRovStatus::drawRoll()
 {
 	//draw roll
 	nvgSave(_vg);
-	nvgRotate(_vg, float(-_navdata.ROLL));
+	nvgRotate(_vg, CC_DEGREES_TO_RADIANS(float(-_navdata.ROLL)));
 	nvgFillColor(_vg, nvgRGB(255, 255, 255));
 	nvgBeginPath(_vg);
 	nvgMoveTo(_vg, 0, -radialRadius);
@@ -331,9 +361,9 @@ void CRovStatus::drawHorizon()
 {
 	float pitchPixels, pixelsPerDeg = _contentSize.height / (frontCameraFovY / 2);
 	nvgSave(_vg);
-	nvgRotate(_vg,-_navdata.ROLL);
-	pitchPixels = _navdata.PITC / (M_PI * 2) * 360 * pixelsPerDeg;
+	pitchPixels = _navdata.PITC * pixelsPerDeg;
 	nvgTranslate(_vg,0, pitchPixels);
+	nvgRotate(_vg,CC_DEGREES_TO_RADIANS(-_navdata.ROLL));
 	/*
 	nvgfillStyle = skyColor;
 	nvgfillRect(-10000, -10000, 20000, 10000);
@@ -378,3 +408,4 @@ void CRovStatus::drawHorizon()
 	}
 	nvgRestore(_vg);
 }
+
