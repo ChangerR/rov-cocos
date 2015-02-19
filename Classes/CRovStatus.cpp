@@ -1,10 +1,11 @@
 #include "CRovStatus.h"
-
 #include "nanovg.h"
 #define NANOVG_GLES2_IMPLEMENTATION
 #include "nanovg_gl.h"
 #include "nanovg_gl_utils.h"
 #include <math.h>
+#include "stringc.h"
+
 
 CRovStatus::CRovStatus() :_status(0), _vg(0)
 {
@@ -33,20 +34,53 @@ void CRovStatus::updateCapeDate(capedata& cape)
 
 bool CRovStatus::init(const cocos2d::Size& _si)
 {
-	_vg = nvgCreateGLES2(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
-	_font_face = nvgCreateFont(_vg, "arial", "fonts/arial.ttf");
+	_vg = nvgCreateGLES2(NVG_ANTIALIAS | NVG_STENCIL_STROKES|NVG_DEBUG);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	ssize_t len = 0;
+	unsigned char * d = cocos2d::FileUtils::getInstance()->getFileData("fonts/arial.ttf","r",&len);
+	if (d) {
+		_font_face = nvgCreateFontMem(_vg, "arial",d,len,1);
+	}
+#else
+	_font_face = nvgCreateFont(_vg,"arial","fonts/arial.ttf");
+#endif
 	if (!Node::init())
 	{
 		return false;
 	}
 	setContentSize(_si);
-	_campass = cocos2d::Sprite::create("campass.png");
-	if (_campass) {	
-		_campass->setAnchorPoint(cocos2d::Vec2(0.5f, 0));
-		_campass->setPosition(cocos2d::Vec2(_contentSize.width / 2, 0));
-		CC_SAFE_RETAIN(_campass);
-		addChild(_campass, 1);
-	}
+	_campass = cocos2d::Node::create();
+	do 
+	{
+		if (_campass) {
+			auto cam1 = cocos2d::Sprite::createWithSpriteFrameName("campass_01.png");
+			auto cam2 = cocos2d::Sprite::createWithSpriteFrameName("campass_02.png");
+			auto cam3 = cocos2d::Sprite::createWithSpriteFrameName("campass_03.png");
+			if (!cam1 || !cam2 || !cam3)
+			{
+				CC_SAFE_RELEASE(cam1);
+				CC_SAFE_RELEASE(cam2);
+				CC_SAFE_RELEASE(cam3);
+				break;
+			}
+			cam1->setAnchorPoint(cocos2d::Vec2::ZERO);
+			cam2->setAnchorPoint(cocos2d::Vec2::ZERO);
+			cam3->setAnchorPoint(cocos2d::Vec2::ZERO);
+			cam1->setPosition(cocos2d::Vec2::ZERO);
+			cam2->setPosition(cocos2d::Vec2(cam1->getContentSize().width, 0));
+			cam3->setPosition(cocos2d::Vec2(cam1->getContentSize().width + cam2->getContentSize().width, 0));
+			_campass->setContentSize(cocos2d::Size(cam1->getContentSize().width + cam2->getContentSize().width + cam3->getContentSize().width, cam1->getContentSize().height));
+			_campass->addChild(cam1);
+			_campass->addChild(cam2);
+			_campass->addChild(cam3);
+			_campass->setAnchorPoint(cocos2d::Vec2(0.5f, 0));
+
+			_campass->setPosition(cocos2d::Vec2(_contentSize.width / 2, 0));
+			CC_SAFE_RETAIN(_campass);
+			addChild(_campass, 1);
+		}
+	} while (0);
+	
 
 	auto arrow = cocos2d::Sprite::create("arrow.png");
 	if (arrow)
@@ -193,8 +227,8 @@ void CRovStatus::drawRoll()
 	nvgTextAlign(_vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
 	nvgFontBlur(_vg, 0);
 	nvgFillColor(_vg, nvgRGB(0, 0, 0));
-	char buf[16]{0};
-	nvgText(_vg, 0, -radialRadius + 18, _itoa(readableRollAngle, buf, 10), NULL);
+	
+	nvgText(_vg, 0, -radialRadius + 18, stringc_itoa(readableRollAngle,10).c_str(), NULL);
 	nvgRestore(_vg);
 }
 
@@ -261,8 +295,7 @@ void CRovStatus::drawSpeed()
 
 		//nvgBeginPath(_vg);
 		
-		char buf[16]{0};
-		nvgText(_vg, 20, -i * pixelsPer10Kmph + yOffset + 4,_itoa(i*10,buf,10),NULL);
+		nvgText(_vg, 20, -i * pixelsPer10Kmph + yOffset + 4,stringc_itoa(i*10,10).c_str(),NULL);
 	}
 
 	nvgBeginPath(_vg);
@@ -278,7 +311,11 @@ void CRovStatus::drawSpeed()
 
 	nvgFillColor(_vg,nvgRGB(0,0,0));
 	char fl[32]{0};
+#ifdef USE_SPRINTF_S 
 	sprintf_s<32>(fl, "%.f", round(_navdata.FTHR * 100) / 100);
+#else
+	sprintf(fl, "%.f", round(_navdata.FTHR * 100) / 100);
+#endif
 	nvgText(_vg, 15, 4.5,fl,NULL);
 	nvgRestore(_vg);
 }
@@ -328,8 +365,7 @@ void CRovStatus::drawAltitude()
 		}
 		nvgStroke(_vg);
 
-		char buf[16]{0};
-		nvgText(_vg, 15, -i * pixelsPer100Ft + yOffset + 4,_itoa(i,buf,10),NULL);
+		nvgText(_vg, 15, -i * pixelsPer100Ft + yOffset + 4,stringc_itoa(i,10).c_str(),NULL);
 	}
 
 	nvgRestore(_vg);
@@ -352,7 +388,11 @@ void CRovStatus::drawAltitude()
 	
 	nvgFillColor(_vg, nvgRGB(0, 0, 0));
 	char fl[32]{0};
+#ifdef USE_SPRINTF_S
 	sprintf_s<32>(fl, "%.f", round(_navdata.DEAP * 100) / 100);
+#else
+	sprintf(fl, "%.f", round(_navdata.DEAP * 100) / 100);
+#endif
 	nvgText(_vg, 15, 4.5, fl,NULL);
 	nvgRestore(_vg);
 }
@@ -385,8 +425,7 @@ void CRovStatus::drawHorizon()
 	nvgFontSize(_vg, 12);
 	nvgTextAlign(_vg, NVG_ALIGN_LEFT | NVG_ALIGN_BOTTOM);
 	nvgFontBlur(_vg, 0);
-		
-	char buf[16]{0};
+
 	for (int i = -18; i <= 18; ++i) {
 		int pitchAngle = int(i / 2.f * 10);
 		if (i != 0) {
@@ -395,8 +434,8 @@ void CRovStatus::drawHorizon()
 				nvgMoveTo(_vg,-majorWidth / 2, -pixelsPerDeg * pitchAngle);
 				nvgLineTo(_vg,+majorWidth / 2, -pixelsPerDeg * pitchAngle);
 				nvgStroke(_vg);
-				nvgText(_vg,-majorWidth / 2 - 20, -pixelsPerDeg * 10 / 2 * i,_itoa(pitchAngle,buf,10),NULL);
-				nvgText(_vg, majorWidth / 2 + 10, -pixelsPerDeg * 10 / 2 * i, _itoa(pitchAngle, buf, 10), NULL);
+				nvgText(_vg,-majorWidth / 2 - 20, -pixelsPerDeg * 10 / 2 * i,stringc_itoa(pitchAngle,10).c_str(),NULL);
+				nvgText(_vg, majorWidth / 2 + 10, -pixelsPerDeg * 10 / 2 * i, stringc_itoa(pitchAngle,10).c_str(), NULL);
 			}
 			else {
 				nvgBeginPath(_vg);

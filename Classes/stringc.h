@@ -2,6 +2,8 @@
 #define __ROV_STRINGC__H
 #include <string>
 #include <stdlib.h>
+#include <algorithm>    // std::reverse
+
 typedef std::string stringc;
 
 inline void trim(stringc& s) {
@@ -152,5 +154,26 @@ inline bool _check_is_ip(const stringc& s) {
 	
 	return true;
 }
+
+inline std::string stringc_itoa(int value, int base) {
+	std::string buf;
+	// check that the base if valid  
+	if (base < 2 || base > 16) return buf;
+	enum { kMaxDigits = 35 };
+	buf.reserve(kMaxDigits); // Pre-allocate enough space.  
+	int quotient = value;
+	// Translating number to string with base:  
+	do {
+		buf += "0123456789abcdef"[abs(quotient % base)];
+		quotient /= base;
+	} while (quotient);
+
+	// Append the negative sign  
+	if (value < 0) buf += '-';
+	std::reverse(buf.begin(), buf.end());
+
+	return buf;
+}
+
 
 #endif

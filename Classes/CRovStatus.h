@@ -3,7 +3,6 @@
 #include "cocos2d.h"
 #include "stringc.h"
 #include "ui/UIText.h"
-
 struct NVGcontext;
 class CRovStatus :
 	public cocos2d::Node
@@ -92,7 +91,7 @@ private:
 	cocos2d::CustomCommand _customCommand;
 	NVGcontext* _vg;
 	int _font_face;
-	cocos2d::Sprite* _campass;
+	cocos2d::Node* _campass;
 };
 
 #endif

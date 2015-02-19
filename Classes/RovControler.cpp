@@ -1,5 +1,5 @@
 #include "RovControler.h"
-#include "document.h"
+#include "json/document.h"
 #include "CCMjpegVideoViewr.h"
 #define __CCMJPEG_VIDEO_NAME "__CCMJPEG_X_JSSX_"
 #ifdef ROV_USE_THREAD_TIMER_
@@ -118,7 +118,7 @@ void CRovControler::cape_handle(cocos2d::network::SIOClient* client, const strin
 	} while (0);
 
 }
-#define _USE_VIDEO_ 0
+#define _USE_VIDEO_ 1 
 
 void CRovControler::video_start(cocos2d::network::SIOClient* client, const stringc& s)
 {

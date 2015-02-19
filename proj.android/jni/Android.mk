@@ -19,9 +19,12 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   ../../Classes/CCHttpStream.cpp \
 				   ../../Classes/CCMjpegStreamReceiver.cpp \
 					../../Classes/CCAsyncHttpClient.cpp \
-					../../Classes/CColorConvert.cpp
+					../../Classes/CColorConvert.cpp \
+					../../Classes/CRovStatus.cpp \
+					../../Classes/nanovg/nanovg.c
 					
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
+					$(LOCAL_PATH)/../../Classes/nanovg
 
 LOCAL_STATIC_LIBRARIES := cocos2dx_static
 

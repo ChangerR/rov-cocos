@@ -40,6 +40,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 30);
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Plist.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("campass.plist");
+
     // create a scene. it's an autorelease object
     auto scene = CRovLoginLayer::createScene();
 
