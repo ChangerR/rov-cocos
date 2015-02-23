@@ -41,7 +41,7 @@
 #define NVG_INIT_VERTS_SIZE 256
 #define NVG_MAX_STATES 32
 
-#define NVG_KAPPA90 0.5522847493f	// Lenght proportional to radius of a cubic bezier handle for 90deg arcs.
+#define NVG_KAPPA90 0.5522847493f	// Length proportional to radius of a cubic bezier handle for 90deg arcs.
 
 #define NVG_COUNTOF(arr) (sizeof(arr) / sizeof(0[arr]))
 
@@ -1060,7 +1060,7 @@ static void nvg__addPoint(NVGcontext* ctx, float x, float y, int flags)
 	NVGpoint* pt;
 	if (path == NULL) return;
 
-	if (ctx->cache->npoints > 0) {
+	if (path->count > 0 && ctx->cache->npoints > 0) {
 		pt = nvg__lastPoint(ctx);
 		if (nvg__ptEquals(pt->x,pt->y, x,y, ctx->distTol)) {
 			pt->flags |= flags;
@@ -1619,7 +1619,7 @@ static int nvg__expandStroke(NVGcontext* ctx, float w, int lineCap, int lineJoin
 	for (i = 0; i < cache->npaths; i++) {
 		NVGpath* path = &cache->paths[i];
 		int loop = (path->closed == 0) ? 0 : 1;
-		if (lineCap == NVG_ROUND)
+		if (lineJoin == NVG_ROUND)
 			cverts += (path->count + path->nbevel*(ncap+2) + 1) * 2; // plus one for loop
 		else
 			cverts += (path->count + path->nbevel*5 + 1) * 2; // plus one for loop
@@ -2327,7 +2327,7 @@ float nvgText(NVGcontext* ctx, float x, float y, const char* string, const char*
 				break;
 		}
 		prevIter = iter;
-		// Trasnform corners.
+		// Transform corners.
 		nvgTransformPoint(&c[0],&c[1], state->xform, q.x0*invscale, q.y0*invscale);
 		nvgTransformPoint(&c[2],&c[3], state->xform, q.x1*invscale, q.y0*invscale);
 		nvgTransformPoint(&c[4],&c[5], state->xform, q.x1*invscale, q.y1*invscale);
@@ -2542,9 +2542,29 @@ int nvgTextBreakLines(NVGcontext* ctx, const char* string, const char* end, floa
 					breakMaxX = 0.0;
 				}
 			} else {
-				float nextWidth = iter.nextx - rowStartX; //q.x1 - rowStartX;
+				float nextWidth = iter.nextx - rowStartX;
 
-				if (nextWidth > breakRowWidth) {
+				// track last non-white space character
+				if (type == NVG_CHAR) {
+					rowEnd = iter.next;
+					rowWidth = iter.nextx - rowStartX;
+					rowMaxX = q.x1 - rowStartX;
+				}
+				// track last end of a word
+				if (ptype == NVG_CHAR && type == NVG_SPACE) {
+					breakEnd = iter.str;
+					breakWidth = rowWidth;
+					breakMaxX = rowMaxX;
+				}
+				// track last beginning of a word
+				if (ptype == NVG_SPACE && type == NVG_CHAR) {
+					wordStart = iter.str;
+					wordStartX = iter.x;
+					wordMinX = q.x0 - rowStartX;
+				}
+
+				// Break to new line when a character is beyond break width.
+				if (type == NVG_CHAR && nextWidth > breakRowWidth) {
 					// The run length is too long, need to break to new line.
 					if (breakEnd == rowStart) {
 						// The current word is longer than the row length, just break it from here.
@@ -2567,7 +2587,7 @@ int nvgTextBreakLines(NVGcontext* ctx, const char* string, const char* end, floa
 						wordStartX = iter.x;
 						wordMinX = q.x0 - rowStartX;
 					} else {
-						// Break the line from the end of the last word, and start new line from the begining of the new.
+						// Break the line from the end of the last word, and start new line from the beginning of the new.
 						rows[nrows].start = rowStart;
 						rows[nrows].end = breakEnd;
 						rows[nrows].width = breakWidth * invscale;
@@ -2580,7 +2600,7 @@ int nvgTextBreakLines(NVGcontext* ctx, const char* string, const char* end, floa
 						rowStartX = wordStartX;
 						rowStart = wordStart;
 						rowEnd = iter.next;
-						rowWidth = iter.nextx - rowStartX; // q.x1 - rowStartX;
+						rowWidth = iter.nextx - rowStartX;
 						rowMinX = wordMinX;
 						rowMaxX = q.x1 - rowStartX;
 						// No change to the word start
@@ -2590,25 +2610,6 @@ int nvgTextBreakLines(NVGcontext* ctx, const char* string, const char* end, floa
 					breakWidth = 0.0;
 					breakMaxX = 0.0;
 				}
-
-				// track last non-white space character
-				if (type == NVG_CHAR) {
-					rowEnd = iter.next;
-					rowWidth = iter.nextx - rowStartX; // q.x1 - rowStartX;
-					rowMaxX = q.x1 - rowStartX;
-				}
-				// track last end of a word
-				if (ptype == NVG_CHAR && (type == NVG_SPACE || type == NVG_SPACE)) {
-					breakEnd = iter.str;
-					breakWidth = rowWidth;
-					breakMaxX = rowMaxX;
-				}
-				// track last beginning of a word
-				if ((ptype == NVG_SPACE || ptype == NVG_SPACE) && type == NVG_CHAR) {
-					wordStart = iter.str;
-					wordStartX = iter.x;
-					wordMinX = q.x0 - rowStartX;
-				}
 			}
 		}
 
@@ -2616,7 +2617,7 @@ int nvgTextBreakLines(NVGcontext* ctx, const char* string, const char* end, floa
 		ptype = type;
 	}
 
-	// Break the line from the end of the last word, and start new line from the begining of the new.
+	// Break the line from the end of the last word, and start new line from the beginning of the new.
 	if (rowStart != NULL) {
 		rows[nrows].start = rowStart;
 		rows[nrows].end = rowEnd;

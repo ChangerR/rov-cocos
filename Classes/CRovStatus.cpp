@@ -44,7 +44,7 @@ bool CRovStatus::init(const cocos2d::Size& _si)
 #else
 	_font_face = nvgCreateFont(_vg,"arial","fonts/arial.ttf");
 #endif
-	if (!Node::init())
+	if (!Layer::init())
 	{
 		return false;
 	}
@@ -94,7 +94,7 @@ bool CRovStatus::init(const cocos2d::Size& _si)
 	//_status->setAnchorPoint(cocos2d::Vec2(0.f, 0.f));
 	//_status->setPosition(cocos2d::Vec2(0.f, 0.f));
 	//addChild(_status, 1);
-
+	
 	return true;
 }
 
@@ -141,8 +141,8 @@ void CRovStatus::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transfor
 
 void CRovStatus::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 {
-	
-	nvgBeginFrame(_vg, _contentSize.width, _contentSize.height, 1);
+
+	nvgBeginFrame(_vg, _contentSize.width, _contentSize.height, _contentSize.width/_contentSize.height);
 
 	nvgTranslate(_vg, _contentSize.width / 2, _contentSize.height / 2);
 
@@ -158,10 +158,12 @@ void CRovStatus::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 
 	///////////////////////////////////////////////////
 	nvgEndFrame(_vg);
+	
 	cocos2d::GL::bindTexture2D(0);
 	cocos2d::GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_NONE);
 
 	cocos2d::GL::useProgram(0);
+	
 }
 
 const static  float zeroWidth = 100.f, zeroGap = 10.f, radialRadius = 178.f, radialLimit = 60.f,
@@ -403,6 +405,8 @@ void CRovStatus::drawHorizon()
 	nvgSave(_vg);
 	pitchPixels = _navdata.PITC * pixelsPerDeg;
 	nvgTranslate(_vg,0, pitchPixels);
+	
+	//nvgRotate(_vg, NVG_PI / 3);
 	nvgRotate(_vg,CC_DEGREES_TO_RADIANS(-_navdata.ROLL));
 	/*
 	nvgfillStyle = skyColor;
@@ -426,25 +430,26 @@ void CRovStatus::drawHorizon()
 	nvgTextAlign(_vg, NVG_ALIGN_LEFT | NVG_ALIGN_BOTTOM);
 	nvgFontBlur(_vg, 0);
 
+	nvgBeginPath(_vg);
 	for (int i = -18; i <= 18; ++i) {
 		int pitchAngle = int(i / 2.f * 10);
 		if (i != 0) {
 			if (i % 2 == 0) {
-				nvgBeginPath(_vg);
+				
 				nvgMoveTo(_vg,-majorWidth / 2, -pixelsPerDeg * pitchAngle);
 				nvgLineTo(_vg,+majorWidth / 2, -pixelsPerDeg * pitchAngle);
-				nvgStroke(_vg);
 				nvgText(_vg,-majorWidth / 2 - 20, -pixelsPerDeg * 10 / 2 * i,stringc_itoa(pitchAngle,10).c_str(),NULL);
 				nvgText(_vg, majorWidth / 2 + 10, -pixelsPerDeg * 10 / 2 * i, stringc_itoa(pitchAngle,10).c_str(), NULL);
 			}
 			else {
-				nvgBeginPath(_vg);
 				nvgMoveTo(_vg,-minorWidth / 2, -pixelsPerDeg * pitchAngle);
 				nvgLineTo(_vg,+minorWidth / 2, -pixelsPerDeg * pitchAngle);
-				nvgStroke(_vg);
 			}
 		}
 	}
+
+	nvgStroke(_vg);
 	nvgRestore(_vg);
 }
+
 

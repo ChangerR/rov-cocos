@@ -44,8 +44,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
     auto scene = CRovLoginLayer::createScene();
-
-    // run
+	// run
     director->runWithScene(scene);
 
     return true;

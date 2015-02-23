@@ -229,6 +229,7 @@ void CCMjpegVideoViewr::visit(Renderer *renderer, const Mat4& parentTransform, u
 		char tmp[32];
 		sprintf(tmp, "%.1f fps", fps);
 		_FPSLabel->setString(tmp);
+		
 	}
 	Node::visit(renderer, parentTransform, parentFlags);	
 }
@@ -237,8 +238,8 @@ float CCMjpegVideoViewr::Get_FPS()
 {
 	frameCount++;
 	currentTime = clock() / (float)CLOCKS_PER_SEC;
-
-	if (currentTime - lastTime > 1.0f) 
+	
+	if (abs(currentTime - lastTime) > 1.0f) 
 	{
 		fps = (float)frameCount / (currentTime - lastTime);
 		lastTime = currentTime;  

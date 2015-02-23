@@ -537,6 +537,9 @@ void RovScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 
 	switch (keyCode)
 	{
+	case EventKeyboard::KeyCode::KEY_BREAK:
+		cocos2d::Director::getInstance()->end();
+		break;
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
 		m_rovCtrl->setPosition(0, 0, 0);
 		break;

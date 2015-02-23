@@ -5,7 +5,7 @@
 #include "ui/UIText.h"
 struct NVGcontext;
 class CRovStatus :
-	public cocos2d::Node
+	public cocos2d::Layer
 {
 public:
 	class navdata{
