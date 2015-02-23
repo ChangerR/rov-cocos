@@ -73,6 +73,8 @@ public:
 
 	static CRovStatus* create(const cocos2d::Size& _si);
 
+
+	static float Inc_FPS();
 private:
 
 	void drawZero();
@@ -92,6 +94,10 @@ private:
 	NVGcontext* _vg;
 	int _font_face;
 	cocos2d::Node* _campass;
+	static float  fps;
+	static int    frameCount;
+	static float  currentTime;
+	static float  lastTime;
 };
 
 #endif

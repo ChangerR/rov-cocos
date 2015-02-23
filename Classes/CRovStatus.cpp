@@ -1,4 +1,5 @@
 #include "CRovStatus.h"
+#include <time.h>
 #include "nanovg.h"
 #define NANOVG_GLES2_IMPLEMENTATION
 #include "nanovg_gl.h"
@@ -156,6 +157,12 @@ void CRovStatus::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 
 	drawAltitude();
 
+	char tmp[32]{0};
+	sprintf(tmp, "%.1ffps", CRovStatus::fps);
+	nvgFontFaceId(_vg, _font_face);
+	nvgFontSize(_vg, 16);
+	nvgTextAlign(_vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
+	nvgText(_vg, -_contentSize.width / 2, -_contentSize.height / 2, tmp, NULL);
 	///////////////////////////////////////////////////
 	nvgEndFrame(_vg);
 	
@@ -452,4 +459,22 @@ void CRovStatus::drawHorizon()
 	nvgRestore(_vg);
 }
 
+float CRovStatus::Inc_FPS()
+{
+	frameCount++;
+	currentTime = clock() / (float)CLOCKS_PER_SEC;
 
+	if (abs(currentTime - lastTime) > 1.0f)
+	{
+		fps = (float)frameCount / (currentTime - lastTime);
+		lastTime = currentTime;
+		frameCount = 0;
+	}
+
+	return fps;
+}
+
+float  CRovStatus::fps = 0;
+int    CRovStatus::frameCount = 0;
+float  CRovStatus::currentTime = 0.0f;
+float  CRovStatus::lastTime = 0.0f;

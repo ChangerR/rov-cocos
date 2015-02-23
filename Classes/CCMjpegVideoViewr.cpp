@@ -1,6 +1,6 @@
 #include "CCMjpegVideoViewr.h"
 #include "CColorConvert.h"
-#include <time.h>
+#include "CRovStatus.h"
 
 const stringc jpeg_tex = "/rov_mjpeg_x_x_1";
 
@@ -8,13 +8,11 @@ CCMjpegVideoViewr::CCMjpegVideoViewr()
 {
 	m_recv = new CCMjpegStreamReceiver();
 	_texture = NULL;
-	_FPSLabel = NULL;
 }
 
 
 CCMjpegVideoViewr::~CCMjpegVideoViewr()
 {
-	CC_SAFE_RELEASE(_FPSLabel);
 	if (m_recv)
 	{
 		m_recv->closeReceiver();
@@ -44,7 +42,7 @@ void CCMjpegVideoViewr::draw(Renderer *renderer, const Mat4& transform, uint32_t
 	{
 		Image* img = m_recv->pop();
 		if (img)
-			Get_FPS();
+			CRovStatus::Inc_FPS();
 
 		updateTexture(img);
 
@@ -192,17 +190,6 @@ bool CCMjpegVideoViewr::init(const Color4B& color)
 
 	setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP));
 
-	_FPSLabel = ui::Text::create("0.0fps", "fonts/Marker Felt.ttf", 25);
-	if (_FPSLabel)
-	{
-		_FPSLabel->retain();
-		_FPSLabel->setAnchorPoint(Vec2(0.f, 1.f));
-		_FPSLabel->setPosition(Vec2(Director::getInstance()->getVisibleOrigin().x,
-			getContentSize().height));
-		this->addChild(_FPSLabel, 0);
-	}
-	
-
 	return true;
 }
 
@@ -224,27 +211,5 @@ void CCMjpegVideoViewr::updateColor()
 
 void CCMjpegVideoViewr::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags)
 {
-	if (_FPSLabel)
-	{
-		char tmp[32];
-		sprintf(tmp, "%.1f fps", fps);
-		_FPSLabel->setString(tmp);
-		
-	}
 	Node::visit(renderer, parentTransform, parentFlags);	
-}
-
-float CCMjpegVideoViewr::Get_FPS()
-{
-	frameCount++;
-	currentTime = clock() / (float)CLOCKS_PER_SEC;
-	
-	if (abs(currentTime - lastTime) > 1.0f) 
-	{
-		fps = (float)frameCount / (currentTime - lastTime);
-		lastTime = currentTime;  
-		frameCount = 0;
-	}
-
-	return fps;
 }

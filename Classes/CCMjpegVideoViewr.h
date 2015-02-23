@@ -3,7 +3,6 @@
 #include "cocos2d.h"
 #include "curl/curl.h"
 #include "CCMjpegStreamReceiver.h"
-#include "ui/UIText.h"
 using namespace cocos2d;
 
 class CCMjpegVideoViewr : public Node
@@ -35,7 +34,6 @@ public:
 
 	void calculateDeltaTime();
 
-	float Get_FPS();
 
 protected:
 	CCMjpegVideoViewr();
@@ -49,11 +47,6 @@ private:
 	Vec2 _squareVertices[4];
 	Vec2 _textureCoord[4];
 	Color4F  _squareColors[4];  
-	float  fps = 0;
-	int    frameCount = 0;
-	float  currentTime = 0.0f;
-	float  lastTime = 0.0f;
-	ui::Text* _FPSLabel;
 };
 
 #endif
