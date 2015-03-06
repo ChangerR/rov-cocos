@@ -66,23 +66,53 @@ void CRovControler::nav_handle(cocos2d::network::SIOClient* client, const string
 
 			const rapidjson::Value& args = pArgs[i];
 
-			if (args.HasMember("pitch"))
-				_nav.PITC = atof(args["pitch"].GetString());
+			if (args.HasMember("pitch")) {
+				
+				if (args["pitch"].IsString())
+					_nav.PITC = atof(args["pitch"].GetString());
+				else
+					_nav.PITC = args["pitch"].GetDouble();
+			}
+				
+			if (args.HasMember("roll")) {
 
-			if (args.HasMember("roll"))
-				_nav.ROLL = atof(args["roll"].GetString());
+				if (args["roll"].IsString())
+					_nav.ROLL = atof(args["roll"].GetString());
+				else
+					_nav.ROLL = args["roll"].GetDouble();
+			}
+			
+			if (args.HasMember("yaw")) {
 
-			if (args.HasMember("yaw"))
-				_nav.YAW = atof(args["yaw"].GetString());
+				if (args["yaw"].IsString())
+					_nav.YAW = atof(args["yaw"].GetString());
+				else
+					_nav.YAW = args["yaw"].GetDouble();
+			}
 
-			if (args.HasMember("thrust"))
-				_nav.FTHR = atof(args["thrust"].GetString());
+			if (args.HasMember("thrust")) {
 
-			if (args.HasMember("deapth"))
-				_nav.DEAP = atof(args["deapth"].GetString());
+				if (args["thrust"].IsString())
+					_nav.FTHR = atof(args["thrust"].GetString());
+				else
+					_nav.FTHR = args["thrust"].GetDouble();
+			}
 
-			if (args.HasMember("hdgd"))
-				_nav.HDGD = atof(args["hdgd"].GetString());
+			if (args.HasMember("deapth")) {
+
+				if (args["deapth"].IsString())
+					_nav.DEAP = atof(args["deapth"].GetString());
+				else
+					_nav.DEAP = args["deapth"].GetDouble();
+			}
+
+			if (args.HasMember("hdgd")) {
+
+				if (args["hdgd"].IsString())
+					_nav.HDGD = atof(args["hdgd"].GetString());
+				else
+					_nav.HDGD = args["hdgd"].GetDouble();
+			}
 		}
 
 		m_status->updateNavData(_nav);
@@ -108,11 +138,23 @@ void CRovControler::cape_handle(cocos2d::network::SIOClient* client, const strin
 		CC_BREAK_IF(!pArgs.IsArray());
 
 		const rapidjson::Value& args = pArgs[rapidjson::SizeType(0)];
-		if (args.HasMember("vout"))
-			_cape.VOUT = args["vout"].GetDouble();
 
-		if (args.HasMember("iout"))
-			_cape.IOUT = args["iout"].GetDouble();
+		if (args.HasMember("vout")) {
+
+			if (args["vout"].IsString())
+				_cape.VOUT = atof(args["vout"].GetString());
+			else
+				_cape.VOUT = args["vout"].GetDouble();
+		}
+
+		if (args.HasMember("iout")) {
+
+			if (args["iout"].IsString())
+				_cape.IOUT = atof(args["iout"].GetString());
+			else
+				_cape.IOUT = args["iout"].GetDouble();
+		}
+
 		
 		m_status->updateCapeDate(_cape);
 	} while (0);

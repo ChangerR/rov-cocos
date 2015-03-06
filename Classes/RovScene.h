@@ -5,6 +5,8 @@
 #include "ui/UIWidget.h"
 #include "ui/UISlider.h"
 #include "RovControler.h"
+#include "CCaptureNode.h"
+
 class RovScene : public cocos2d::Layer
 {
 public:
@@ -60,6 +62,7 @@ private:
 
 	CRovControler* m_rovCtrl = nullptr;
 	Node* menu;
+	CCaptureNode* _capture_node = nullptr;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

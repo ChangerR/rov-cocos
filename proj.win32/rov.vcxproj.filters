@@ -51,6 +51,12 @@
     <ClCompile Include="..\Classes\nanovg\nanovg.c">
       <Filter>nanovg</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\CCaptureNode.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CUIJoystick.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -106,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\nanovg\stb_truetype.h">
       <Filter>nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CCaptureNode.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CUIJoystick.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

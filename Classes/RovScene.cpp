@@ -222,6 +222,11 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 		b_exit->addClickEventListener(CC_CALLBACK_1(RovScene::endEvent, this));
 		this->addChild(b_exit, 8);
 	}
+
+	_capture_node = CCaptureNode::create();
+	if (_capture_node)
+		addChild(_capture_node, 100);
+
 	auto key_listener = EventListenerKeyboard::create();
 	if (key_listener)
 	{
@@ -258,6 +263,7 @@ RovScene::~RovScene()
 {
 	CC_SAFE_RELEASE(m_rovCtrl);
 	CC_SAFE_RELEASE(menu);
+	CC_SAFE_RELEASE(_capture_node);
 }
 
 void RovScene::onSettintEvent(Ref *pSender)
@@ -557,6 +563,9 @@ void RovScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 		break;
 	case EventKeyboard::KeyCode::KEY_LEFT_CTRL:
 		m_rovCtrl->setPosition(0, 0, 0);
+		break;
+	case EventKeyboard::KeyCode::KEY_R:
+		_capture_node->capture();
 		break;
 	default:
 		break;

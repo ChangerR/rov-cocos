@@ -27,6 +27,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
+	
     if(!glview) {
         glview = GLViewImpl::create("rov-1-0");
         director->setOpenGLView(glview);
@@ -34,7 +35,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+	director->setDisplayStats(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 30);

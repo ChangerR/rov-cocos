@@ -3,6 +3,7 @@
 #include <string>
 #include <stdlib.h>
 #include <algorithm>    // std::reverse
+#include <time.h>
 
 typedef std::string stringc;
 
@@ -60,21 +61,22 @@ inline int toDigit(const stringc& s) {
 		i *= -1;
 	return i;
 }
-/*
+
 inline void formatRandomString(stringc& s) {
-char buf[32]{0};
-time_t timep;
-struct tm *p;
 
-time(&timep);
-p = localtime(&timep);
-sprintf(buf, "%d%d%d%d%d%d", (1900 + p->tm_year), (1 + p->tm_mon),
-p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
-
-s.clear();
-s.append(buf);
+	char buf[32]{0};	
+	time_t timep;
+	struct tm *p;	
+		
+	time(&timep);	
+	p = localtime(&timep);	
+	sprintf(buf, "%d%d%d%d%d%d", (1900 + p->tm_year), (1 + p->tm_mon),	
+	p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);	
+		
+	s.clear();	
+	s.append(buf);	
 }
-*/
+
 
 
 inline bool isHexDigit(const stringc& s){
