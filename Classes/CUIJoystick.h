@@ -18,9 +18,11 @@ public:
 
 	void setContentSize(const cocos2d::Size& contentSize);
 
+#ifdef __ROV_JOYSTICK_DEBUG_
 	void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transform, uint32_t flags);
 
 	void onDraw(const cocos2d::Mat4& transform, uint32_t flags);
+#endif
 
 private:
 	CUIJoystick();
@@ -38,8 +40,12 @@ private:
 	void onTouchCancelled(cocos2d::Touch*, cocos2d::Event*);
 
 	void handleTouchChange(cocos2d::Touch*);
-	cocos2d::CustomCommand _custom;
+
 	cocos2d::Node* _background;
+
+#ifdef __ROV_JOYSTICK_DEBUG_
+	cocos2d::CustomCommand _custom;
+#endif
 };
 
 #endif

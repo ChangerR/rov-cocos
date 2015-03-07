@@ -37,17 +37,19 @@ public:
 
 	void slider_light_Event(Ref *pSender, cocos2d::ui::Slider::EventType type);
 
-	void onBtnUpTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
+	//void onBtnUpTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
 
-	void onBtnDownTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
+	//void onBtnDownTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
 
-	void onBtnLeftTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
+	//void onBtnLeftTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
 
-	void onBtnRightTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
+	//void onBtnRightTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
 
 	void onBtnLiftTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
 
 	void onBtnDiveTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
+
+	void onJoySticEvent(const cocos2d::Vec2& pos,const cocos2d::Vec2& lastpos);
 
 	virtual void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 

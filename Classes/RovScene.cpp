@@ -4,6 +4,7 @@
 #include "ui/CocosGUI.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/UIButton.h"
+#include "CUIJoystick.h"
 USING_NS_CC;
 
 Scene* RovScene::createScene(const char* url,bool show_ctrl)
@@ -73,54 +74,18 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 	{
 		
 		Size button_size = Size::ZERO;
-		auto b_up = ui::Button::create("up.png", "up_red.png","",ui::Widget::TextureResType::PLIST);
 		float button_height = visibleSize.width / 10.f;
-		if (b_up)
-		{
-
-			b_up->addTouchEventListener(CC_CALLBACK_2(RovScene::onBtnUpTouchEvent, this));
-			button_size = b_up->getContentSize();
-			if (button_size.height == 0.f)
-			{
-				CC_SAFE_RELEASE(b_up);
-				return false;
-			}
-			b_up->setScale(button_height/ button_size.height);
-			b_up->setPosition(Vec2(25 + button_height*3/2 ,25 + button_height * 5 /2));
-			this->addChild(b_up,8);
-		}
-		
-		auto b_left = ui::Button::create("left.png", "left_red.png","", ui::Widget::TextureResType::PLIST);
-		if (b_left)
-		{
-			b_left->addTouchEventListener(CC_CALLBACK_2(RovScene::onBtnLeftTouchEvent, this));
-			b_left->setScale(button_height / button_size.height);
-			b_left->setPosition(Vec2(25 + button_height / 2, 25 + button_height * 3 / 2));
-			this->addChild(b_left, 8);
-		}
-
-		auto b_right = ui::Button::create("right.png", "right_red.png", "", ui::Widget::TextureResType::PLIST);
-		if (b_right)
-		{
-			b_right->addTouchEventListener(CC_CALLBACK_2(RovScene::onBtnRightTouchEvent, this));
-			b_right->setScale(button_height / button_size.height);
-			b_right->setPosition(Vec2(25 + button_height * 5 / 2, 25 + button_height * 3 / 2));
-			this->addChild(b_right, 8);
-		}
-
-		auto b_down = ui::Button::create("down.png", "down_red.png", "", ui::Widget::TextureResType::PLIST);
-		if (b_down)
-		{
-			b_down->addTouchEventListener(CC_CALLBACK_2(RovScene::onBtnDownTouchEvent, this));
-			b_down->setScale(button_height / button_size.height);
-			b_down->setPosition(Vec2(25 + button_height * 3 / 2, 25 + button_height / 2));
-			this->addChild(b_down, 8);
-		}
 
 		auto b_lift = ui::Button::create("lift.png", "lift_red.png", "", ui::Widget::TextureResType::PLIST);
 		if (b_lift)
 		{
 			b_lift->addTouchEventListener(CC_CALLBACK_2(RovScene::onBtnLiftTouchEvent, this));
+			button_size = b_lift->getContentSize();
+			if (button_size.height == 0.f)
+			{
+				CC_SAFE_RELEASE(b_lift);
+				return false;
+			}
 			b_lift->setScale(button_height / button_size.height);
 			b_lift->setPosition(Vec2(visibleSize.width - 100 - button_height / 2, 25 + button_height * 3 / 2));
 			this->addChild(b_lift, 8);
@@ -134,7 +99,54 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 			b_divi->setPosition(Vec2(visibleSize.width - 100 - button_height / 2, 25 + button_height / 2));
 			this->addChild(b_divi, 8);
 		}
-		
+
+		auto _joy = CUIJoystick::create("joystick_manuel.png", "joystick_halo.png");
+		if (_joy)
+		{
+			_joy->setContentSize(Size(visibleSize.width / 4, visibleSize.width / 4));
+			_joy->setAnchorPoint(Vec2::ZERO);
+			_joy->setPosition(Vec2(30,30));
+			_joy->setJoystickPositionChangeHandler(CC_CALLBACK_2(RovScene::onJoySticEvent, this));
+			this->addChild(_joy, 8);
+		}
+//		auto b_up = ui::Button::create("up.png", "up_red.png","",ui::Widget::TextureResType::PLIST);
+//		if (b_up)
+//		{
+//
+//			b_up->addTouchEventListener(CC_CALLBACK_2(RovScene::onBtnUpTouchEvent, this));
+//			
+//			b_up->setScale(button_height/ button_size.height);
+//			b_up->setPosition(Vec2(25 + button_height*3/2 ,25 + button_height * 5 /2));
+//			this->addChild(b_up,8);
+//		}
+//		
+//		auto b_left = ui::Button::create("left.png", "left_red.png","", ui::Widget::TextureResType::PLIST);
+//		if (b_left)
+//		{
+//			b_left->addTouchEventListener(CC_CALLBACK_2(RovScene::onBtnLeftTouchEvent, this));
+//			b_left->setScale(button_height / button_size.height);
+//			b_left->setPosition(Vec2(25 + button_height / 2, 25 + button_height * 3 / 2));
+//			this->addChild(b_left, 8);
+//		}
+//
+//		auto b_right = ui::Button::create("right.png", "right_red.png", "", ui::Widget::TextureResType::PLIST);
+//		if (b_right)
+//		{
+//			b_right->addTouchEventListener(CC_CALLBACK_2(RovScene::onBtnRightTouchEvent, this));
+//			b_right->setScale(button_height / button_size.height);
+//			b_right->setPosition(Vec2(25 + button_height * 5 / 2, 25 + button_height * 3 / 2));
+//			this->addChild(b_right, 8);
+//		}
+//
+//		auto b_down = ui::Button::create("down.png", "down_red.png", "", ui::Widget::TextureResType::PLIST);
+//		if (b_down)
+//		{
+//			b_down->addTouchEventListener(CC_CALLBACK_2(RovScene::onBtnDownTouchEvent, this));
+//			b_down->setScale(button_height / button_size.height);
+//			b_down->setPosition(Vec2(25 + button_height * 3 / 2, 25 + button_height / 2));
+//			this->addChild(b_down, 8);
+//		}
+
 		auto b_setting = ui::Button::create("setting.png","setting_sel.png", "", ui::Widget::TextureResType::PLIST);
 		if (b_setting)
 		{
@@ -274,113 +286,113 @@ void RovScene::onSettintEvent(Ref *pSender)
 	}
 }
 
-void RovScene::onBtnUpTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
-{
-	if (!m_rovCtrl)return;
-
-	switch (type)
-	{
-	case cocos2d::ui::Widget::TouchEventType::BEGAN:
-		m_rovCtrl->setPosition(FORWARD_VALUE, 0, 0);
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::MOVED:
-
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::ENDED:
-		m_rovCtrl->setPosition(0, 0, 0);
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		m_rovCtrl->setPosition(0, 0, 0);
-		break;
-
-	default:
-		break;
-	}
-}
-
-void RovScene::onBtnDownTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
-{
-	if (!m_rovCtrl)return;
-
-	switch (type)
-	{
-	case cocos2d::ui::Widget::TouchEventType::BEGAN:
-		m_rovCtrl->setPosition(BACK_VALUE, 0, 0);
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::MOVED:
-
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::ENDED:
-		m_rovCtrl->setPosition(0, 0, 0);
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		m_rovCtrl->setPosition(0, 0, 0);
-		break;
-
-	default:
-		break;
-	}
-}
-
-void RovScene::onBtnLeftTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
-{
-	if (!m_rovCtrl)return;
-
-	switch (type)
-	{
-	case cocos2d::ui::Widget::TouchEventType::BEGAN:
-		m_rovCtrl->setPosition(0, LEFT_VALUE, 0);
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::MOVED:
-
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::ENDED:
-		m_rovCtrl->setPosition(0, 0, 0);
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		m_rovCtrl->setPosition(0, 0, 0);
-		break;
-
-	default:
-		break;
-	}
-}
-
-void RovScene::onBtnRightTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
-{
-	if (!m_rovCtrl)return;
-
-	switch (type)
-	{
-	case cocos2d::ui::Widget::TouchEventType::BEGAN:
-		m_rovCtrl->setPosition(0, RIGHT_VALUE, 0);
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::MOVED:
-
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::ENDED:
-		m_rovCtrl->setPosition(0, 0, 0);
-		break;
-
-	case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		m_rovCtrl->setPosition(0, 0, 0);
-		break;
-
-	default:
-		break;
-	}
-}
+//void RovScene::onBtnUpTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
+//{
+//	if (!m_rovCtrl)return;
+//
+//	switch (type)
+//	{
+//	case cocos2d::ui::Widget::TouchEventType::BEGAN:
+//		m_rovCtrl->setPosition(FORWARD_VALUE, 0, 0);
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::MOVED:
+//
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::ENDED:
+//		m_rovCtrl->setPosition(0, 0, 0);
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::CANCELED:
+//		m_rovCtrl->setPosition(0, 0, 0);
+//		break;
+//
+//	default:
+//		break;
+//	}
+//}
+//
+//void RovScene::onBtnDownTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
+//{
+//	if (!m_rovCtrl)return;
+//
+//	switch (type)
+//	{
+//	case cocos2d::ui::Widget::TouchEventType::BEGAN:
+//		m_rovCtrl->setPosition(BACK_VALUE, 0, 0);
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::MOVED:
+//
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::ENDED:
+//		m_rovCtrl->setPosition(0, 0, 0);
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::CANCELED:
+//		m_rovCtrl->setPosition(0, 0, 0);
+//		break;
+//
+//	default:
+//		break;
+//	}
+//}
+//
+//void RovScene::onBtnLeftTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
+//{
+//	if (!m_rovCtrl)return;
+//
+//	switch (type)
+//	{
+//	case cocos2d::ui::Widget::TouchEventType::BEGAN:
+//		m_rovCtrl->setPosition(0, LEFT_VALUE, 0);
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::MOVED:
+//
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::ENDED:
+//		m_rovCtrl->setPosition(0, 0, 0);
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::CANCELED:
+//		m_rovCtrl->setPosition(0, 0, 0);
+//		break;
+//
+//	default:
+//		break;
+//	}
+//}
+//
+//void RovScene::onBtnRightTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
+//{
+//	if (!m_rovCtrl)return;
+//
+//	switch (type)
+//	{
+//	case cocos2d::ui::Widget::TouchEventType::BEGAN:
+//		m_rovCtrl->setPosition(0, RIGHT_VALUE, 0);
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::MOVED:
+//
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::ENDED:
+//		m_rovCtrl->setPosition(0, 0, 0);
+//		break;
+//
+//	case cocos2d::ui::Widget::TouchEventType::CANCELED:
+//		m_rovCtrl->setPosition(0, 0, 0);
+//		break;
+//
+//	default:
+//		break;
+//	}
+//}
 
 void RovScene::onBtnLiftTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
 {
@@ -570,6 +582,14 @@ void RovScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 	default:
 		break;
 	}
+}
+
+void RovScene::onJoySticEvent(const cocos2d::Vec2& pos, const cocos2d::Vec2& lastpos)
+{
+	if (!m_rovCtrl)
+		return;
+
+	m_rovCtrl->setPosition(FORWARD_VALUE * pos.y, RIGHT_VALUE * pos.x, 0);
 }
 
 

@@ -149,6 +149,8 @@ void CUIJoystick::handleTouchChange(cocos2d::Touch* touch)
 
 	_joystick->setPosition(hit + origin);
 
+	hit = hit / (bigR - smallR);
+
 	if (!_handler._Empty())
 		_handler(hit, _joy_pos);
 
@@ -188,6 +190,7 @@ void CUIJoystick::setContentSize(const cocos2d::Size& contentSize)
 	
 }
 
+#ifdef __ROV_JOYSTICK_DEBUG_
 void CUIJoystick::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transform, uint32_t flags)
 {
 	_custom.init(_globalZOrder);
@@ -209,3 +212,4 @@ void CUIJoystick::onDraw(const cocos2d::Mat4& transform, uint32_t flags)
 	director->popMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 }
 
+#endif
