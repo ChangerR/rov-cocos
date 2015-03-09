@@ -146,6 +146,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\CRovLoginLayer.cpp" />
     <ClCompile Include="..\Classes\CRovStatus.cpp" />
     <ClCompile Include="..\Classes\CUIJoystick.cpp" />
+    <ClCompile Include="..\Classes\CUIScrollBar.cpp" />
     <ClCompile Include="..\Classes\nanovg\nanovg.c" />
     <ClCompile Include="..\Classes\RovControler.cpp" />
     <ClCompile Include="..\Classes\RovScene.cpp" />
@@ -162,6 +163,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\CRovLoginLayer.h" />
     <ClInclude Include="..\Classes\CRovStatus.h" />
     <ClInclude Include="..\Classes\CUIJoystick.h" />
+    <ClInclude Include="..\Classes\CUIScrollBar.h" />
     <ClInclude Include="..\Classes\nanovg\fontstash.h" />
     <ClInclude Include="..\Classes\nanovg\nanovg.h" />
     <ClInclude Include="..\Classes\nanovg\nanovg_gl.h" />

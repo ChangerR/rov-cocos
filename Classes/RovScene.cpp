@@ -5,6 +5,7 @@
 #include "cocostudio/CocoStudio.h"
 #include "ui/UIButton.h"
 #include "CUIJoystick.h"
+#include "CUIScrollBar.h"
 USING_NS_CC;
 
 Scene* RovScene::createScene(const char* url,bool show_ctrl)
@@ -233,6 +234,15 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 	if (b_exit) {
 		b_exit->addClickEventListener(CC_CALLBACK_1(RovScene::endEvent, this));
 		this->addChild(b_exit, 8);
+	}
+
+	auto bar = CUIScrollBar::create("sliderThumb.png","sliderVertical.png");
+	if (bar)
+	{
+		bar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+		bar->setPosition(Vec2(visibleSize.width - 15, visibleSize.height / 2));
+		bar->setScrollBarEvent(CC_CALLBACK_1(RovScene::onCamScrollEvent, this));
+		this->addChild(bar, 8);
 	}
 
 	_capture_node = CCaptureNode::create();
@@ -590,6 +600,14 @@ void RovScene::onJoySticEvent(const cocos2d::Vec2& pos, const cocos2d::Vec2& las
 		return;
 
 	m_rovCtrl->setPosition(FORWARD_VALUE * pos.y, RIGHT_VALUE * pos.x, 0);
+}
+
+void RovScene::onCamScrollEvent(float pos)
+{
+	if (!m_rovCtrl)
+		return;
+
+	m_rovCtrl->setCameraTilt((pos - 0.5f) * 2);
 }
 
 

@@ -33,6 +33,8 @@ public:
 
 	void onCameraDownEvent(Ref *pSender);
 
+	void onCamScrollEvent(float);
+
 	void slider_power_Event(Ref *pSender, cocos2d::ui::Slider::EventType type);
 
 	void slider_light_Event(Ref *pSender, cocos2d::ui::Slider::EventType type);
