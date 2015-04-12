@@ -21,7 +21,11 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 					../../Classes/CCAsyncHttpClient.cpp \
 					../../Classes/CColorConvert.cpp \
 					../../Classes/CRovStatus.cpp \
-					../../Classes/nanovg/nanovg.c
+					../../Classes/nanovg/nanovg.c \
+					../../Classes/CUITabMenu.cpp \
+					../../Classes/CUIJoystick.cpp \
+					../../Classes/CUIScrollBar.cpp \
+					../../Classes/CCaptureNode.cpp
 					
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
 					$(LOCAL_PATH)/../../Classes/nanovg

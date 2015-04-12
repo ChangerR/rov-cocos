@@ -2,6 +2,7 @@
 #define __CUITABMENU_H
 #include "cocos2d.h"
 #include "ui/UILayoutManager.h"
+#include "ui/UILayout.h"
 USING_NS_CC;
 
 class CUITabMenu :
@@ -10,8 +11,11 @@ class CUITabMenu :
 public:
 	virtual ~CUITabMenu();
 
+	bool init();
+
 private:
 	CUITabMenu();
+
 	ui::Layout* _backgound;
 };
 

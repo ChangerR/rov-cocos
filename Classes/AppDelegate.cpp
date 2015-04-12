@@ -40,8 +40,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 30);
 
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Plist.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("campass.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("res/Plist.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("res/campass.plist");
 
     // create a scene. it's an autorelease object
     auto scene = CRovLoginLayer::createScene();

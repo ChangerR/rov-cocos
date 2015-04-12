@@ -106,7 +106,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot)external\json;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\curl\include\win32\;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes\nanovg;..\Classes;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -147,6 +147,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\CRovStatus.cpp" />
     <ClCompile Include="..\Classes\CUIJoystick.cpp" />
     <ClCompile Include="..\Classes\CUIScrollBar.cpp" />
+    <ClCompile Include="..\Classes\CUITabMenu.cpp" />
     <ClCompile Include="..\Classes\nanovg\nanovg.c" />
     <ClCompile Include="..\Classes\RovControler.cpp" />
     <ClCompile Include="..\Classes\RovScene.cpp" />
@@ -164,6 +165,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\CRovStatus.h" />
     <ClInclude Include="..\Classes\CUIJoystick.h" />
     <ClInclude Include="..\Classes\CUIScrollBar.h" />
+    <ClInclude Include="..\Classes\CUITabMenu.h" />
     <ClInclude Include="..\Classes\nanovg\fontstash.h" />
     <ClInclude Include="..\Classes\nanovg\nanovg.h" />
     <ClInclude Include="..\Classes\nanovg\nanovg_gl.h" />

@@ -72,3 +72,14 @@ void CCaptureNode::capture()
 {
 	_capture = true;
 }
+
+CCaptureNode* CCaptureNode::create()
+{
+	CCaptureNode* bar = new(std::nothrow) CCaptureNode();
+	if (bar&&bar->init())
+	{
+		bar->autorelease();
+		return bar;
+	}
+	return nullptr;
+}

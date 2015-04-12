@@ -91,7 +91,7 @@ void CUIJoystick::onTouchEnded(cocos2d::Touch*, cocos2d::Event*)
 {
 	_joystick->setPosition(_contentSize / 2);
 
-	if (!_handler._Empty())
+	if (bool(_handler))
 		_handler(cocos2d::Vec2::ZERO, cocos2d::Vec2::ZERO);
 
 	_joy_pos = cocos2d::Vec2::ZERO;
@@ -151,7 +151,7 @@ void CUIJoystick::handleTouchChange(cocos2d::Touch* touch)
 
 	hit = hit / (bigR - smallR);
 
-	if (!_handler._Empty())
+	if (bool(_handler))
 		_handler(hit, _joy_pos);
 
 	_joy_pos = hit;

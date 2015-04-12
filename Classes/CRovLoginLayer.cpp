@@ -47,7 +47,7 @@ bool CRovLoginLayer::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto s_back = Sprite::create("back.png");
+	auto s_back = Sprite::create("res/back.png");
 	if (s_back)
 	{
 		CCLOG("%f %f", s_back->getContentSize().width, s_back->getContentSize().height);
@@ -80,7 +80,7 @@ bool CRovLoginLayer::init()
 	_t->setContentSize(editBoxSize);
 	addChild(_t, 8);
 
-	std::string pNormalSprite = "orange_edit.png";
+	std::string pNormalSprite = "res/orange_edit.png";
 	_ip_e = ui::EditBox::create(editBoxSize, ui::Scale9Sprite::create(pNormalSprite));
 	_ip_e->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height * 3 / 4 - 50));
 	_ip_e->setFontName("Marker Felt");

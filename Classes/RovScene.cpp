@@ -6,6 +6,7 @@
 #include "ui/UIButton.h"
 #include "CUIJoystick.h"
 #include "CUIScrollBar.h"
+#include "CCaptureNode.h"
 USING_NS_CC;
 
 Scene* RovScene::createScene(const char* url,bool show_ctrl)
@@ -101,7 +102,7 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 			this->addChild(b_divi, 8);
 		}
 
-		auto _joy = CUIJoystick::create("joystick_manuel.png", "joystick_halo.png");
+		auto _joy = CUIJoystick::create("res/joystick_manuel.png", "res/joystick_halo.png");
 		if (_joy)
 		{
 			_joy->setContentSize(Size(visibleSize.width / 4, visibleSize.width / 4));
@@ -182,9 +183,9 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 					if (power_viewr)
 					{
 						ui::Slider* slider = ui::Slider::create();
-						slider->loadBarTexture("sliderTrack.png");
-						slider->loadSlidBallTextures("sliderThumb.png", "sliderThumb.png", "");
-						slider->loadProgressBarTexture("sliderProgress.png");
+						slider->loadBarTexture("res/sliderTrack.png");
+						slider->loadSlidBallTextures("res/sliderThumb.png", "res/sliderThumb.png", "");
+						slider->loadProgressBarTexture("res/sliderProgress.png");
 						//slider->setContentSize(Size(menu_light_view->getContentSize().width * 150 / 480, slider->getContentSize().height * 2.0f));
 						slider->addEventListener(CC_CALLBACK_2(RovScene::slider_power_Event, this));
 						slider->setPercent(10);
@@ -197,9 +198,9 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 					if (menu_light_view)
 					{
 						ui::Slider* slider = ui::Slider::create();
-						slider->loadBarTexture("sliderTrack.png");
-						slider->loadSlidBallTextures("sliderThumb.png", "sliderThumb.png", "");
-						slider->loadProgressBarTexture("sliderProgress.png");
+						slider->loadBarTexture("res/sliderTrack.png");
+						slider->loadSlidBallTextures("res/sliderThumb.png", "res/sliderThumb.png", "");
+						slider->loadProgressBarTexture("res/sliderProgress.png");
 						//slider->setContentSize(Size(menu_light_view->getContentSize().width * 150 / 480, slider->getContentSize().height * 2.0f));
 						slider->addEventListener(CC_CALLBACK_2(RovScene::slider_light_Event, this));
 						menu_light_view->addChild(slider);
@@ -236,7 +237,7 @@ bool RovScene::init(const char* ip, bool show_ctrl)
 		this->addChild(b_exit, 8);
 	}
 
-	auto bar = CUIScrollBar::create("sliderThumb.png","sliderVertical.png");
+	auto bar = CUIScrollBar::create("res/sliderThumb.png","res/sliderVertical.png");
 	if (bar)
 	{
 		bar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);

@@ -17,7 +17,7 @@ public:
 
 	void capture();
 
-	CREATE_FUNC(CCaptureNode)
+	static CCaptureNode* create();
 
 private:
 	bool _capture;

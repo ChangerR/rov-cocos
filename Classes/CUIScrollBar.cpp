@@ -103,7 +103,7 @@ void CUIScrollBar::onTouchEnded(cocos2d::Touch*, cocos2d::Event*)
 		if (_pos != pos)
 		{
 			pos = _pos;
-			if (!_handler._Empty())
+			if (bool(_handler))
 				_handler(pos / _background->getContentSize().height);
 		}
 		_touch_sel = false;
