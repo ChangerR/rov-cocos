@@ -4,8 +4,9 @@
 #include "platform/CCImage.h"
 #include <mutex>
 #include <thread>
+#include "IStreamReceiver.h"
 
-class CCMjpegStreamReceiver 
+class CCMjpegStreamReceiver :public IStreamReceiver
 {
 public:
 
@@ -25,10 +26,14 @@ public:
 
 	bool openReceiver(const char* path);
 
-	bool getRunningState() const {
+	bool getRunningState(){
 		return isRunning;
 	}
 
+	void capture() {
+		capture_pic = true;
+	}
+	
 	static bool capture_pic;
 
 private:

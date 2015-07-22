@@ -1,5 +1,5 @@
 #include "CRovLoginLayer.h"
-#include "RovScene.h"
+#include "CMainScene.h"
 #include "ui/UIButton.h"
 #include "ui/UIText.h"
 
@@ -182,7 +182,7 @@ void CRovLoginLayer::endEvent(Ref *pSender)
 
 void CRovLoginLayer::loginEvent(Ref *pSender)
 {
-	Scene* sc = RovScene::createScene(_ip.c_str(),true);
+	Scene* sc = CMainScene::createScene(_ip.c_str(),true);
 	if (sc)
 	{
 		Director::getInstance()->replaceScene(sc);
@@ -192,7 +192,7 @@ void CRovLoginLayer::loginEvent(Ref *pSender)
 
 void CRovLoginLayer::guestLoginEvent(Ref *pSender)
 {
-	Scene* sc = RovScene::createScene(_ip.c_str(), false);
+	Scene* sc = CMainScene::createScene(_ip.c_str(), false);
 	if (sc)
 	{
 		Director::getInstance()->replaceScene(sc);

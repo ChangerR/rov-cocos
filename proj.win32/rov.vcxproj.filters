@@ -21,9 +21,6 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\RovScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\CCHttpStream.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -34,12 +31,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\CColorConvert.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CCMjpegVideoViewr.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\RovControler.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\CRovLoginLayer.cpp">
@@ -63,15 +54,27 @@
     <ClCompile Include="..\Classes\CUITabMenu.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\CCStreamVideoPlayer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CCUdpReceiver.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CMainScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CRovControler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CEntertainmentControler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\RovScene.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CCHttpStream.h">
@@ -87,12 +90,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CColorConvert.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CCMjpegVideoViewr.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\RovControler.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CRovLoginLayer.h">
@@ -129,6 +126,27 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CUITabMenu.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\IStreamReceiver.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CCStreamVideoPlayer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CCUdpReceiver.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\IControler.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CMainScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CRovControler.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CEntertainmentControler.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

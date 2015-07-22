@@ -1,0 +1,14 @@
+prefix=/home/changer/Desktop/temp/ffmpeg-2.5.7/android
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libavcodec
+Description: FFmpeg codec library
+Version: 56.13.100
+Requires: 
+Requires.private: libswresample >= 1.1.100, libavutil >= 54.15.100
+Conflicts:
+Libs: -L${libdir}  -lavcodec 
+Libs.private: -lx264 -ldl -lm -lz -pthread
+Cflags: -I${includedir}

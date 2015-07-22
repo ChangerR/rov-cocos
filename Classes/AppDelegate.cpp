@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "RovScene.h"
+#include "CMainScene.h"
 #include "CRovLoginLayer.h"
 
 USING_NS_CC;

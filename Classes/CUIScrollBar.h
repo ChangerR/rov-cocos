@@ -8,6 +8,7 @@ class CUIScrollBar :
 	public cocos2d::Node
 {
 public:
+
 	typedef std::function<void(float)> ScollBarHandler;
 
 	virtual ~CUIScrollBar();

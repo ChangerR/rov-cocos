@@ -83,7 +83,7 @@ bool CRovStatus::init(const cocos2d::Size& _si)
 	} while (0);
 	
 
-	auto arrow = cocos2d::Sprite::create("arrow.png");
+	auto arrow = cocos2d::Sprite::create("res/arrow.png");
 	if (arrow)
 	{
 		arrow->setAnchorPoint(cocos2d::Vec2(0.5f, 1.f));
@@ -117,10 +117,12 @@ CRovStatus* CRovStatus::create(const cocos2d::Size& _si)
 
 void CRovStatus::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags)
 {
-	/*char tmp[64]{0};
+	/*
+	char tmp[64]{0};
 	sprintf(tmp, "V:%.2f I:%.2f", float(_capedate.VOUT), float(_capedate.IOUT));
 	if (_status)
-		_status->setString(tmp);*/
+		_status->setString(tmp);
+	*/
 	float angle = _navdata.HDGD;
 	while (angle > 180) {
 		angle -= 360;

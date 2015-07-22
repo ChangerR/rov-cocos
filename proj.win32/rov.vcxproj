@@ -65,7 +65,8 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>G:\package\cocos2d-x-3.3\rov-cocos\prebuild\ffmpeg\x86\lib;$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>G:\package\cocos2d-x-3.3\rov-cocos\prebuild\ffmpeg\x86\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
@@ -90,8 +91,9 @@
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -139,41 +141,47 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\CCaptureNode.cpp" />
-    <ClCompile Include="..\Classes\CCMjpegVideoViewr.cpp" />
+    <ClCompile Include="..\Classes\CCStreamVideoPlayer.cpp" />
     <ClCompile Include="..\Classes\CCHttpStream.cpp" />
     <ClCompile Include="..\Classes\CCAsyncHttpClient.cpp" />
     <ClCompile Include="..\Classes\CColorConvert.cpp" />
+    <ClCompile Include="..\Classes\CCUdpReceiver.cpp" />
+    <ClCompile Include="..\Classes\CEntertainmentControler.cpp" />
     <ClCompile Include="..\Classes\CRovLoginLayer.cpp" />
     <ClCompile Include="..\Classes\CRovStatus.cpp" />
     <ClCompile Include="..\Classes\CUIJoystick.cpp" />
     <ClCompile Include="..\Classes\CUIScrollBar.cpp" />
     <ClCompile Include="..\Classes\CUITabMenu.cpp" />
     <ClCompile Include="..\Classes\nanovg\nanovg.c" />
-    <ClCompile Include="..\Classes\RovControler.cpp" />
-    <ClCompile Include="..\Classes\RovScene.cpp" />
+    <ClCompile Include="..\Classes\CRovControler.cpp" />
+    <ClCompile Include="..\Classes\CMainScene.cpp" />
     <ClCompile Include="..\Classes\CCMjpegStreamReceiver.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\CCaptureNode.h" />
-    <ClInclude Include="..\Classes\CCMjpegVideoViewr.h" />
+    <ClInclude Include="..\Classes\CCStreamVideoPlayer.h" />
     <ClInclude Include="..\Classes\CCHttpStream.h" />
     <ClInclude Include="..\Classes\CCAsyncHttpClient.h" />
     <ClInclude Include="..\Classes\CColorConvert.h" />
+    <ClInclude Include="..\Classes\CCUdpReceiver.h" />
+    <ClInclude Include="..\Classes\CEntertainmentControler.h" />
     <ClInclude Include="..\Classes\CRovLoginLayer.h" />
     <ClInclude Include="..\Classes\CRovStatus.h" />
     <ClInclude Include="..\Classes\CUIJoystick.h" />
     <ClInclude Include="..\Classes\CUIScrollBar.h" />
     <ClInclude Include="..\Classes\CUITabMenu.h" />
+    <ClInclude Include="..\Classes\IControler.h" />
+    <ClInclude Include="..\Classes\IStreamReceiver.h" />
     <ClInclude Include="..\Classes\nanovg\fontstash.h" />
     <ClInclude Include="..\Classes\nanovg\nanovg.h" />
     <ClInclude Include="..\Classes\nanovg\nanovg_gl.h" />
     <ClInclude Include="..\Classes\nanovg\nanovg_gl_utils.h" />
     <ClInclude Include="..\Classes\nanovg\stb_image.h" />
     <ClInclude Include="..\Classes\nanovg\stb_truetype.h" />
-    <ClInclude Include="..\Classes\RovControler.h" />
-    <ClInclude Include="..\Classes\RovScene.h" />
+    <ClInclude Include="..\Classes\CRovControler.h" />
+    <ClInclude Include="..\Classes\CMainScene.h" />
     <ClInclude Include="..\Classes\CCMjpegStreamReceiver.h" />
     <ClInclude Include="..\Classes\stringc.h" />
     <ClInclude Include="main.h" />
