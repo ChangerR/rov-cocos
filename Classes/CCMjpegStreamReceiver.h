@@ -27,15 +27,18 @@ public:
 	bool openReceiver(const char* path);
 
 	bool getRunningState(){
-		return isRunning;
+		return _running;
 	}
 
 	void capture() {
 		capture_pic = true;
 	}
 	
+	bool restart();
+
 	static bool capture_pic;
 
+	static unsigned int receiver(CCMjpegStreamReceiver* data);
 private:
 
 	CCAsyncHttpClient* p_conn;
@@ -44,6 +47,8 @@ private:
 	int max_size;
 	std::thread* receiver_handle;
 	std::mutex m_lock;
-	bool isRunning;
+	bool _thread_running;
+	bool _running;
+	stringc m_url;
 };
 #endif

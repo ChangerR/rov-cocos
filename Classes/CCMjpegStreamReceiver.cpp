@@ -1,8 +1,8 @@
 #include "CCMjpegStreamReceiver.h"
 
-unsigned int receiver(CCMjpegStreamReceiver* data) {
+unsigned int CCMjpegStreamReceiver::receiver(CCMjpegStreamReceiver* data) {
 
-	while(data->getRunningState()) {
+	while(data->_thread_running) {
 		data->push();
 	}
 
@@ -12,17 +12,19 @@ unsigned int receiver(CCMjpegStreamReceiver* data) {
 
 CCMjpegStreamReceiver::CCMjpegStreamReceiver(int max_):max_size(max_)
 {
-	p_conn = new CCAsyncHttpClient();
+	p_conn = nullptr;
 	m_buf = new u8[max_];
 	receiver_handle = NULL;
-	isRunning = false;
+	_thread_running = false;
+	_running = false;
 }
 
 CCMjpegStreamReceiver::~CCMjpegStreamReceiver( void )
 {
 	closeReceiver();
 	delete[] m_buf;
-	delete p_conn;
+	if (p_conn)
+		delete p_conn;
 }
 
 const stringc& CCMjpegStreamReceiver::getResponse()
@@ -123,22 +125,32 @@ bool CCMjpegStreamReceiver::openReceiver(const char* path)
 {
 	if (receiver_handle)
 		return false;
-	isRunning = true;
+	_thread_running = true;
+
+	if (p_conn)
+		delete p_conn;
+
+	p_conn = new CCAsyncHttpClient;
+
 	p_conn->openConnection(path);
-	receiver_handle =new std::thread(receiver,this);
+	m_url = path;
+	receiver_handle =new std::thread(CCMjpegStreamReceiver::receiver,this);
+
+	if (receiver_handle != nullptr)
+		_running = true;
 
 	return receiver_handle != nullptr;
 }
 
 void CCMjpegStreamReceiver::closeReceiver()
 {
-	isRunning = false;
+	_running = false;
+	_thread_running = false;
 	if (receiver_handle)
 	{
 		receiver_handle->join();
 		delete receiver_handle;
 		receiver_handle = NULL;
-		p_conn->closeConnection();
 	}	
 
 	if (!images.empty())
@@ -158,7 +170,7 @@ void CCMjpegStreamReceiver::push()
 	cocos2d::Image* img = new (std::nothrow)cocos2d::Image;
 	if (!getRecvData(&len)||!img->initWithImageData(m_buf,len)) {
 		CCLOG("get image data false");
-		isRunning = false;
+		_thread_running = false;
 		return;
 	}
 
@@ -193,6 +205,20 @@ cocos2d::Image* CCMjpegStreamReceiver::pop()
 		
 	m_lock.unlock();
 	return img;
+}
+
+bool CCMjpegStreamReceiver::restart()
+{
+	_thread_running = false;
+	if (receiver_handle)
+	{
+		receiver_handle->join();
+		delete receiver_handle;
+		receiver_handle = NULL;
+		p_conn->closeConnection();
+	}
+
+	return openReceiver(m_url.c_str());
 }
 
 bool CCMjpegStreamReceiver::capture_pic = false;

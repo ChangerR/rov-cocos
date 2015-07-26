@@ -183,6 +183,7 @@ void CRovLoginLayer::endEvent(Ref *pSender)
 void CRovLoginLayer::loginEvent(Ref *pSender)
 {
 	Scene* sc = CMainScene::createScene(_ip.c_str(),true,"mjpeg");
+
 	if (sc)
 	{
 		Director::getInstance()->replaceScene(sc);

@@ -26,19 +26,6 @@ CCStreamVideoPlayer::~CCStreamVideoPlayer()
 
 }
 
-CCStreamVideoPlayer* CCStreamVideoPlayer::create(const char* url,const Color4B& color)
-{
-	CCStreamVideoPlayer *viwer = new (std::nothrow) CCStreamVideoPlayer();
-	if (viwer&&viwer->init(url,color))
-	{
-		viwer->m_url = url;
-		viwer->autorelease();
-		return viwer;
-	}
-	CC_SAFE_DELETE(viwer);
-	return nullptr;
-}
-
 void CCStreamVideoPlayer::draw(Renderer *renderer, const Mat4& transform, uint32_t flags)
 {
 	if (m_recv->getRunningState() != false)
@@ -230,8 +217,7 @@ void CCStreamVideoPlayer::visit(Renderer *renderer, const Mat4& parentTransform,
 bool CCStreamVideoPlayer::restart()
 {
 	if (m_recv) {
-		m_recv->closeReceiver();
-		return m_recv->openReceiver(m_url.c_str());
+		return m_recv->restart();
 	}
 
 	return false;

@@ -16,6 +16,8 @@ public:
 	virtual void capture() = 0;
 
 	virtual bool getRunningState() = 0;
+
+	virtual bool restart() = 0;
 };
 
 #endif

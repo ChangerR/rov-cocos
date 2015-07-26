@@ -15,9 +15,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                   ../../Classes/AppDelegate.cpp \
                    ../../Classes/CCStreamVideoPlayer.cpp \
 				   ../../Classes/CCUdpReceiver.cpp \
-				   ../../Classes/RovScene.cpp \
 				   ../../Classes/CRovLoginLayer.cpp \
-				   ../../Classes/RovControler.cpp \
+				   ../../Classes/CRovControler.cpp \
 				   ../../Classes/CCHttpStream.cpp \
 				   ../../Classes/CCMjpegStreamReceiver.cpp \
 					../../Classes/CCAsyncHttpClient.cpp \
@@ -27,7 +26,9 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 					../../Classes/CUITabMenu.cpp \
 					../../Classes/CUIJoystick.cpp \
 					../../Classes/CUIScrollBar.cpp \
-					../../Classes/CCaptureNode.cpp
+					../../Classes/CCaptureNode.cpp \
+					../../Classes/CMainScene.cpp  \
+					../../Classes/CEntertainmentControler.cpp
 
 					
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \

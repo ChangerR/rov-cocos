@@ -24,6 +24,10 @@ public:
 		capture_pic = true;
 	}
 
+	bool restart() {
+		return false;
+	}
+
 	bool getRunningState();
 
 	static bool capture_pic;

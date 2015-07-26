@@ -12,7 +12,20 @@ class CMainScene : public cocos2d::Layer
 {
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
-	static cocos2d::Scene* createScene(const char* url, bool show_ctrl, const char* _proto);
+	static cocos2d::Scene* createScene(const char* const url,bool show_ctrl,const char* const  _proto)
+	{
+	    // 'scene' is an autorelease object
+	    auto scene = Scene::create();
+
+	    // 'layer' is an autorelease object
+	    auto layer = CMainScene::create(url,show_ctrl,_proto);
+
+	    // add layer as a child to scene
+	    scene->addChild(layer);
+
+	    // return the scene
+	    return scene;
+	}
 
 	virtual ~CMainScene();
 
@@ -61,9 +74,22 @@ public:
 	virtual void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
     // implement the "static create()" method manually
-	static CMainScene* create(const char* url, bool show_ctrl,const char* _proto);
+	static CMainScene* create(const char* url, bool show_ctrl,const char* _proto)
+	{
+		CMainScene *pRet = new CMainScene();
+		if (pRet && pRet->init(url,show_ctrl,_proto))
+		{
+			pRet->autorelease();
+			return pRet;
+		}
+		else
+		{
+			delete pRet;
+			pRet = NULL;
+			return NULL;
+		}
+	}
 
-	void Update(float dt);
 
 private:
 

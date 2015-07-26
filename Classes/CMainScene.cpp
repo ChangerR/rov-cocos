@@ -12,20 +12,6 @@
 
 USING_NS_CC;
 
-Scene* CMainScene::createScene(const char* url,bool show_ctrl,const char* _proto)
-{
-    // 'scene' is an autorelease object
-    auto scene = Scene::create();
-    
-    // 'layer' is an autorelease object
-    auto layer = CMainScene::create(url,show_ctrl,_proto);
-
-    // add layer as a child to scene
-    scene->addChild(layer);
-
-    // return the scene
-    return scene;
-}
 
 // on "init" you need to initialize your instance
 bool CMainScene::init(const char* ip, bool show_ctrl,const char* _proto)
@@ -240,10 +226,10 @@ bool CMainScene::init(const char* ip, bool show_ctrl,const char* _proto)
 		auto b_restart = ui::Button::create("res/restart.png", "res/restart2.png");
 		if (b_restart)
 		{
-			b_setting->addClickEventListener(CC_CALLBACK_1(CMainScene::onRestartVideo, this));
+			b_restart->addClickEventListener(CC_CALLBACK_1(CMainScene::onRestartVideo, this));
 			b_restart->setScale(b_setting->getContentSize().height * 0.5f/ b_restart->getContentSize().height );
 			b_restart->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
-			b_restart->setPosition(Vec2(visibleSize.width - b_setting->getContentSize().height*0.5f, visibleSize.height));
+			b_restart->setPosition(Vec2(visibleSize.width - b_setting->getContentSize().height*2.5f, visibleSize.height));
 			this->addChild(b_restart, 8);
 		}
 	}
@@ -468,21 +454,6 @@ void CMainScene::onBtnDiveTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEve
 	}
 }
 
-CMainScene* CMainScene::create(const char* url, bool show_ctrl,const char* _proto)
-{
-	CMainScene *pRet = new CMainScene(); 
-	if (pRet && pRet->init(url,show_ctrl,_proto))
-	{
-		pRet->autorelease();
-		return pRet;
-	}
-	else
-	{
-		delete pRet;
-		pRet = NULL;
-		return NULL;
-	} 
-}
 
 void CMainScene::onMenuCloseEvent(Ref* pSender)
 {
@@ -674,7 +645,6 @@ void CMainScene::onRestartVideo(Ref *pSender)
 	if (m_rovCtrl)
 		m_rovCtrl->restartStream();
 }
-
 
 
 

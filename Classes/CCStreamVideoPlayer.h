@@ -12,7 +12,18 @@ class CCStreamVideoPlayer : public Node
 public:
 	~CCStreamVideoPlayer();
 
-	static CCStreamVideoPlayer* create(const char* url, const Color4B& color);
+	static CCStreamVideoPlayer* create(const char* url, const Color4B& color)
+	{
+		CCStreamVideoPlayer *viwer = new (std::nothrow) CCStreamVideoPlayer();
+		if (viwer&&viwer->init(url, color))
+		{
+			viwer->m_url = url;
+			viwer->autorelease();
+			return viwer;
+		}
+		CC_SAFE_DELETE(viwer);
+		return nullptr;
+	}
 
 	bool init(const char* url,const Color4B& color);
 

@@ -11,6 +11,7 @@
 #include<sys/types.h>  
 #include<sys/socket.h>  
 #include<netinet/in.h>
+#include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -18,8 +19,11 @@
 typedef int SOCKET;
 #define SOCKADDR_IN struct sockaddr_in
 #define SOCKADDR struct sockaddr
+#define INVALID_SOCKET -1
+#define sprintf_s sprintf
 #define SOCKET_ERROR -1
 #define closesocket ::close
+#define __stdcall
 #endif
 
 class CEntertainmentControler :public IControler{
