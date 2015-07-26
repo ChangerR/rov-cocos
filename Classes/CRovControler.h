@@ -136,17 +136,20 @@ public:
 		return pos;
 	}
 
-	float getPower() const{
+	int getPower() const{
 		return power;
 	}
 
-	void setPosition(float t,float y,float l) {
-		pos.throttle = t * power;
-		pos.yaw =  y * power;
-		pos.lift = l * power;
+	void setThrust(int t, int y, int l) {
+		if (t != INVALID_THRUST_ARG)
+			pos.throttle = t * power;
+		if (y != INVALID_THRUST_ARG)
+			pos.yaw =  y * power;
+		if (l != INVALID_THRUST_ARG)
+			pos.lift = l * power;
 	}
 
-	void setPower(float f){
+	void setPower(int f){
 		power = f;
 	}
 
@@ -236,7 +239,7 @@ private:
 	cocos2d::network::SIOClient* client;
 	Position pos;
 	Position old_pos;
-	float power; 
+	int power; 
 	float vtrim;
 	float ttrim;
 	float tilt;

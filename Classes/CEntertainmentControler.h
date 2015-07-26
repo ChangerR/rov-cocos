@@ -43,11 +43,11 @@ public:
 
 	void adjustLights(float value);
 
-	void setPower(float value);
+	void setPower(int value);
 
 	bool getRunningState();
 
-	void setPosition(float t,float y,float l);
+	void setThrust(int t, int y, int l);
 
 	bool restartStream();
 
@@ -79,6 +79,11 @@ private:
 	bool _ping_set;
 	int _ping_num;
 
+	int _thr, _yaw, _lift;
+	int _o_thr, _o_yaw, _o_lift;
+	CRovStatus* _status;
+
+	int _power;
 #ifdef _WIN32
 	static int socket_init;
 	static bool winsock_init();

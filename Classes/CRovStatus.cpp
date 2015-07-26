@@ -165,6 +165,16 @@ void CRovStatus::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 	nvgFontSize(_vg, 16);
 	nvgTextAlign(_vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
 	nvgText(_vg, -_contentSize.width / 2, -_contentSize.height / 2, tmp, NULL);
+
+	if (CRovStatus::_ping < 100)
+		nvgFillColor(_vg, nvgRGBA(0, 255, 0, 255));
+	else if (CRovStatus::_ping < 200)
+		nvgFillColor(_vg, nvgRGBA(255, 126, 0, 255));
+	else
+		nvgFillColor(_vg, nvgRGBA(255, 0, 0, 255));
+
+	sprintf(tmp, "ping:%dms",CRovStatus::_ping);
+	nvgText(_vg, -_contentSize.width / 2, -_contentSize.height / 2 + 16, tmp, NULL);
 	///////////////////////////////////////////////////
 	nvgEndFrame(_vg);
 	
@@ -476,6 +486,7 @@ float CRovStatus::Inc_FPS()
 	return fps;
 }
 
+int CRovStatus::_ping = 0;
 float  CRovStatus::fps = 0;
 int    CRovStatus::frameCount = 0;
 float  CRovStatus::currentTime = 0.0f;

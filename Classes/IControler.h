@@ -2,7 +2,7 @@
 #define __INTERFACE_ROV_CTRL_
 #include "cocos2d.h"
 #include "CRovStatus.h"
-
+#define INVALID_THRUST_ARG 0xffffff
 class IControler :public cocos2d::Node{
 public:	
 
@@ -14,11 +14,11 @@ public:
 	
 	virtual void adjustLights(float value) = 0;
 	
-	virtual void setPower(float value) = 0;
+	virtual void setPower(int value) = 0;
 	
 	virtual bool getRunningState() = 0;
 	
-	virtual void setPosition(float t,float y,float l) = 0;
+	virtual void setThrust(int t,int y,int l) = 0;
 	
 	virtual bool restartStream() = 0;
 	

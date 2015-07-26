@@ -44,8 +44,10 @@ bool CEntertainmentControler::init(const stringc& ip) {
 	
 	_ip = ip;
 	_ping_time = 0;
+	
 	schedule(schedule_selector(CEntertainmentControler::heartBeat), 45.f);
 	schedule(schedule_selector(CEntertainmentControler::beginPing), 1.f);
+	schedule(schedule_selector(CEntertainmentControler::control_update), 0.2f);
 
 	_displayer = nullptr;
 	return true;
@@ -61,6 +63,9 @@ bool CEntertainmentControler::openControl() {
 	_start_time = 0;
 	_ping_set = false;
 	_ping_num = 1;
+
+	_thr = _yaw = _lift = 0;
+	_o_lift = _o_yaw = _o_lift = 0;
 
 	_sock = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
 	
@@ -87,13 +92,17 @@ bool CEntertainmentControler::openControl() {
 }
 
 void CEntertainmentControler::closeControl() {
+	sendCmd("0:::");
 	_isRunning = false;
+
 	if(_recv) {
 		_recv->join();
 		delete _recv;
 	}
-	if(_sock != INVALID_SOCKET)
+	if (_sock != INVALID_SOCKET) {
+		shutdown(_sock, 0x02);
 		closesocket(_sock);
+	}
 	_sock = INVALID_SOCKET;
 }
 
@@ -259,9 +268,9 @@ void CEntertainmentControler::adjustLights(float value)
 
 }
 
-void CEntertainmentControler::setPower(float value)
+void CEntertainmentControler::setPower(int value)
 {
-
+	_power = value;
 }
 
 bool CEntertainmentControler::getRunningState()
@@ -269,9 +278,16 @@ bool CEntertainmentControler::getRunningState()
 	return _isRunning;
 }
 
-void CEntertainmentControler::setPosition(float t, float y, float l)
+void CEntertainmentControler::setThrust(int t, int y, int l)
 {
+	if (t != INVALID_THRUST_ARG)
+		_thr = t;
 
+	if (y != INVALID_THRUST_ARG)
+		_yaw = y;
+
+	if (l != INVALID_THRUST_ARG)
+		_lift = l;
 }
 
 bool CEntertainmentControler::restartStream()
@@ -286,7 +302,21 @@ void CEntertainmentControler::setRovStatus(CRovStatus* status)
 
 void CEntertainmentControler::control_update(float)
 {
+	if (_sock == INVALID_SOCKET)
+		return;
 
+	if (_o_lift != _lift || _o_thr != _thr || _o_yaw != _yaw)
+	{
+		char stmp[32];
+
+		_o_thr = _thr;
+		_o_yaw = _yaw;
+		_o_lift = _lift;
+
+		sprintf(stmp, "2:::go(%d,%d,%d)\r\n", _thr, _yaw, _lift);
+		
+		sendCmd(stmp);
+	}
 }
 
 CEntertainmentControler* CEntertainmentControler::create(const stringc& url)
@@ -344,6 +374,9 @@ void CEntertainmentControler::beginPing(float)
 	if (_ping_set == false) 
 		_ping_time = 999;
 	_ping_num++;
+
+	CRovStatus::_ping = _ping_time;
+
 	sprintf_s(_tmps, "3:::ping:%d\r\n", _ping_num);
 	_ping_set = false;
 	_start_time = clock();

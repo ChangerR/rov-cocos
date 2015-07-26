@@ -411,7 +411,7 @@ void CMainScene::onBtnLiftTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEve
 	switch (type)
 	{
 	case cocos2d::ui::Widget::TouchEventType::BEGAN:
-		m_rovCtrl->setPosition(0, 0, UP_VALUE);
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, INVALID_THRUST_ARG, UP_VALUE);
 		break;
 
 	case cocos2d::ui::Widget::TouchEventType::MOVED:
@@ -419,11 +419,11 @@ void CMainScene::onBtnLiftTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEve
 		break;
 
 	case cocos2d::ui::Widget::TouchEventType::ENDED:
-		m_rovCtrl->setPosition(0, 0, 0);
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, INVALID_THRUST_ARG, 0);
 		break;
 
 	case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		m_rovCtrl->setPosition(0, 0, 0);
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, INVALID_THRUST_ARG, 0);
 		break;
 
 	default:
@@ -438,7 +438,7 @@ void CMainScene::onBtnDiveTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEve
 	switch (type)
 	{
 	case cocos2d::ui::Widget::TouchEventType::BEGAN:
-		m_rovCtrl->setPosition(0, 0, DOWN_VALUE);
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, INVALID_THRUST_ARG, DOWN_VALUE);
 		break;
 
 	case cocos2d::ui::Widget::TouchEventType::MOVED:
@@ -446,11 +446,11 @@ void CMainScene::onBtnDiveTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEve
 		break;
 
 	case cocos2d::ui::Widget::TouchEventType::ENDED:
-		m_rovCtrl->setPosition(0, 0, 0);
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, INVALID_THRUST_ARG, 0);
 		break;
 
 	case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		m_rovCtrl->setPosition(0, 0, 0);
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, INVALID_THRUST_ARG, 0);
 		break;
 
 	default:
@@ -488,8 +488,21 @@ void CMainScene::slider_power_Event(Ref *pSender, ui::Slider::EventType type)
 	{
 		ui::Slider* slider = dynamic_cast<ui::Slider*>(pSender);
 		float percent = slider->getPercent() / 100.f;
+		int i = 0;
+
+		if (percent <= 0.2f)
+			i = 1;
+		else if (percent <= 0.4f)
+			i = 2;
+		else if (percent <= 0.6f)
+			i = 3;
+		else if (percent <= 0.8f)
+			i = 4;
+		else
+			i = 5;
+
 		if (m_rovCtrl)
-			m_rovCtrl->setPower(percent > 0.05f?percent:0.05f);
+			m_rovCtrl->setPower(i);
 	}
 }
 
@@ -536,22 +549,24 @@ void CMainScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 	switch (keyCode)
 	{
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
-		m_rovCtrl->setPosition(FORWARD_VALUE, 0, 0);
+		m_rovCtrl->setThrust(FORWARD_VALUE, INVALID_THRUST_ARG, INVALID_THRUST_ARG);
 		break;
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-		m_rovCtrl->setPosition(BACK_VALUE, 0, 0);
+		m_rovCtrl->setThrust(BACK_VALUE, INVALID_THRUST_ARG, INVALID_THRUST_ARG);
 		break;
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-		m_rovCtrl->setPosition(0, LEFT_VALUE, 0);
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, LEFT_VALUE, INVALID_THRUST_ARG);
 		break;
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-		m_rovCtrl->setPosition(0, RIGHT_VALUE, 0);
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, RIGHT_VALUE, INVALID_THRUST_ARG);
 		break;
 	case EventKeyboard::KeyCode::KEY_LEFT_SHIFT:
-		m_rovCtrl->setPosition(0, 0, UP_VALUE);
+	case EventKeyboard::KeyCode::KEY_RIGHT_SHIFT:
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, INVALID_THRUST_ARG, UP_VALUE);
 		break;
 	case EventKeyboard::KeyCode::KEY_LEFT_CTRL:
-		m_rovCtrl->setPosition(0, 0, DOWN_VALUE);
+	case EventKeyboard::KeyCode::KEY_RIGHT_CTRL:
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, INVALID_THRUST_ARG, DOWN_VALUE);
 		break;
 	default:
 		break;
@@ -569,22 +584,24 @@ void CMainScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 		cocos2d::Director::getInstance()->end();
 		break;
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
-		m_rovCtrl->setPosition(0, 0, 0);
+		m_rovCtrl->setThrust(0 ,INVALID_THRUST_ARG , INVALID_THRUST_ARG);
 		break;
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-		m_rovCtrl->setPosition(0, 0, 0);
+		m_rovCtrl->setThrust(0, INVALID_THRUST_ARG, INVALID_THRUST_ARG);
 		break;
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-		m_rovCtrl->setPosition(0, 0, 0);
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, 0, INVALID_THRUST_ARG);
 		break;
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-		m_rovCtrl->setPosition(0, 0, 0);
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, 0, INVALID_THRUST_ARG);
 		break;
 	case EventKeyboard::KeyCode::KEY_LEFT_SHIFT:
-		m_rovCtrl->setPosition(0, 0, 0);
+	case EventKeyboard::KeyCode::KEY_RIGHT_SHIFT:
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, INVALID_THRUST_ARG, 0);
 		break;
 	case EventKeyboard::KeyCode::KEY_LEFT_CTRL:
-		m_rovCtrl->setPosition(0, 0, 0);
+	case EventKeyboard::KeyCode::KEY_RIGHT_CTRL:
+		m_rovCtrl->setThrust(INVALID_THRUST_ARG, INVALID_THRUST_ARG, 0);
 		break;
 	case EventKeyboard::KeyCode::KEY_R:
 		_capture_node->capture();
@@ -594,12 +611,44 @@ void CMainScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 	}
 }
 
+#define SIN15 0.258819f
+#define SIN75 0.965925f
+
 void CMainScene::onJoySticEvent(const cocos2d::Vec2& pos, const cocos2d::Vec2& lastpos)
 {
 	if (!m_rovCtrl)
 		return;
 
-	m_rovCtrl->setPosition(FORWARD_VALUE * pos.y, RIGHT_VALUE * pos.x, 0);
+	if (pos == cocos2d::Vec2::ZERO) {
+		m_rovCtrl->setThrust(0, 0, INVALID_THRUST_ARG);
+		return;
+	}
+
+	float distance = pos.getLength();
+	float sintheta = pos.y / distance;
+	int t = 0, y = 0;
+	int isNeg = pos.x >= 0 ? 1 : -1;
+
+	if (sintheta <= -SIN75) {
+		t = -1;
+	}
+	else if (sintheta <= -SIN15) {
+		t = -1;
+		y = -1;
+	}
+	else if (sintheta <= SIN15) {
+		y = 1;
+	}
+	else if (sintheta <= SIN75) {
+		t = 1;
+		y = 1;
+	}
+	else
+	{
+		t = 1;
+	}
+	
+	m_rovCtrl->setThrust(t, y, INVALID_THRUST_ARG);
 }
 
 void CMainScene::onCamScrollEvent(float pos)

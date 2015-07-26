@@ -74,6 +74,8 @@ public:
 	static CRovStatus* create(const cocos2d::Size& _si);
 
 	static float Inc_FPS();
+
+	static int _ping;
 private:
 
 	void drawZero();
