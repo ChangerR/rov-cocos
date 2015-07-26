@@ -14,7 +14,7 @@ public:
 
 	static CCStreamVideoPlayer* create(const char* url, const Color4B& color);
 
-	bool init(const Color4B& color);
+	bool init(const char* url,const Color4B& color);
 
 	virtual void draw(Renderer *renderer, const Mat4& transform, uint32_t flags);
 
@@ -36,7 +36,7 @@ public:
 
 	void calculateDeltaTime();
 
-
+	bool restart();
 protected:
 	CCStreamVideoPlayer();
 private:

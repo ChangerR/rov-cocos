@@ -12,13 +12,13 @@
 
 USING_NS_CC;
 
-Scene* CMainScene::createScene(const char* url,bool show_ctrl)
+Scene* CMainScene::createScene(const char* url,bool show_ctrl,const char* _proto)
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
     
     // 'layer' is an autorelease object
-    auto layer = CMainScene::create(url,show_ctrl);
+    auto layer = CMainScene::create(url,show_ctrl,_proto);
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -28,7 +28,7 @@ Scene* CMainScene::createScene(const char* url,bool show_ctrl)
 }
 
 // on "init" you need to initialize your instance
-bool CMainScene::init(const char* ip, bool show_ctrl)
+bool CMainScene::init(const char* ip, bool show_ctrl,const char* _proto)
 {
     //////////////////////////////
     // 1. super init first
@@ -44,32 +44,33 @@ bool CMainScene::init(const char* ip, bool show_ctrl)
 	//auto status = CRovStatus::create(visibleSize);
 	//addChild(status, 2);
 
+	m_rovCtrl = nullptr;
+
 	if (_check_is_ip(ip))
 	{
-		//stringc url("http://");
-		//url.append(ip);
-		
-		m_rovCtrl = CEntertainmentControler::create(ip);
-		//CRovControler::create(this, url + ":8080/", 200);
-
-		if (m_rovCtrl){
-			m_rovCtrl->setAnchorPoint(cocos2d::Vec2::ZERO);
-			m_rovCtrl->setContentSize(visibleSize);
-			auto status = CRovStatus::create(visibleSize);
-			addChild(m_rovCtrl, 2);
-			addChild(status, 2);
-			m_rovCtrl->setRovStatus(status);
-			((CEntertainmentControler*)m_rovCtrl)->openControl();
+		if (strcmp(_proto, "mjpeg") == 0) {
+			stringc url = stringc("http://") + ip;
+			m_rovCtrl = CRovControler::create(url + ":8080/", 200);
+		}else if (strcmp(_proto,"mpegts") == 0)
+		{
+			m_rovCtrl = CEntertainmentControler::create(ip);
+			if (m_rovCtrl)
+				((CEntertainmentControler*)m_rovCtrl)->openControl();
 		}		
-
 	}
 	else {
 		CCLOG("%s is not a ip address\n",ip);
-		m_rovCtrl = NULL /*new CRovControler(url, 200)*/;
 	}
-	//auto _display = CCStreamVideoPlayer::create("", Color4B(255, 255, 255, 255));
-	//this->addChild(_display);
-	
+
+	if (m_rovCtrl){
+		m_rovCtrl->setAnchorPoint(cocos2d::Vec2::ZERO);
+		m_rovCtrl->setContentSize(visibleSize);
+		auto status = CRovStatus::create(visibleSize);
+		addChild(m_rovCtrl, 0);
+		addChild(status, 2);
+		m_rovCtrl->setRovStatus(status);
+	}
+
 	ui::Button* b_exit = ui::Button::create("CloseNormal.png", "CloseSelected.png", "", ui::Widget::TextureResType::PLIST);
 
 	b_exit->setAnchorPoint(Vec2(1.0f, 0.0f));
@@ -108,6 +109,7 @@ bool CMainScene::init(const char* ip, bool show_ctrl)
 			this->addChild(b_divi, 8);
 		}
 
+		
 		auto _joy = CUIJoystick::create("res/joystick_manuel.png", "res/joystick_halo.png");
 		if (_joy)
 		{
@@ -235,7 +237,15 @@ bool CMainScene::init(const char* ip, bool show_ctrl)
 			}
 
 		}
-			
+		auto b_restart = ui::Button::create("res/restart.png", "res/restart2.png");
+		if (b_restart)
+		{
+			b_setting->addClickEventListener(CC_CALLBACK_1(CMainScene::onRestartVideo, this));
+			b_restart->setScale(b_setting->getContentSize().height * 0.5f/ b_restart->getContentSize().height );
+			b_restart->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+			b_restart->setPosition(Vec2(visibleSize.width - b_setting->getContentSize().height*0.5f, visibleSize.height));
+			this->addChild(b_restart, 8);
+		}
 	}
 	
 
@@ -458,10 +468,10 @@ void CMainScene::onBtnDiveTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEve
 	}
 }
 
-CMainScene* CMainScene::create(const char* url, bool show_ctrl)
+CMainScene* CMainScene::create(const char* url, bool show_ctrl,const char* _proto)
 {
 	CMainScene *pRet = new CMainScene(); 
-	if (pRet && pRet->init(url,show_ctrl))
+	if (pRet && pRet->init(url,show_ctrl,_proto))
 	{
 		pRet->autorelease();
 		return pRet;
@@ -618,13 +628,13 @@ void CMainScene::onJoySticEvent(const cocos2d::Vec2& pos, const cocos2d::Vec2& l
 {
 	if (!m_rovCtrl)
 		return;
-
-	if (pos == cocos2d::Vec2::ZERO) {
+	
+	float distance = pos.getLength();
+	if (distance < 0.2f) {
 		m_rovCtrl->setThrust(0, 0, INVALID_THRUST_ARG);
 		return;
 	}
 
-	float distance = pos.getLength();
 	float sintheta = pos.y / distance;
 	int t = 0, y = 0;
 	int isNeg = pos.x >= 0 ? 1 : -1;
@@ -648,7 +658,7 @@ void CMainScene::onJoySticEvent(const cocos2d::Vec2& pos, const cocos2d::Vec2& l
 		t = 1;
 	}
 	
-	m_rovCtrl->setThrust(t, y, INVALID_THRUST_ARG);
+	m_rovCtrl->setThrust(t, y * isNeg, INVALID_THRUST_ARG);
 }
 
 void CMainScene::onCamScrollEvent(float pos)
@@ -657,6 +667,12 @@ void CMainScene::onCamScrollEvent(float pos)
 		return;
 
 	m_rovCtrl->setCameraTilt((pos - 0.5f) * 2);
+}
+
+void CMainScene::onRestartVideo(Ref *pSender)
+{
+	if (m_rovCtrl)
+		m_rovCtrl->restartStream();
 }
 
 

@@ -18,9 +18,8 @@ unsigned int __stdcall control_update(CRovControler* p) {
 }
 #endif
 
-CRovControler::CRovControler(cocos2d::Layer* container, const stringc& url, int u_time) :update_time(u_time), m_delegate(this)
+CRovControler::CRovControler(const stringc& url, int u_time) :update_time(u_time), m_delegate(this)
 {
-	power = 0.1f; 
 	vtrim = 0;
 	ttrim = 0;
 	tilt = 0;
@@ -30,8 +29,8 @@ CRovControler::CRovControler(cocos2d::Layer* container, const stringc& url, int 
 	isRunning = true;
 	hControl= NULL;
 	m_status = NULL;
-	_video_container = container;
-	CC_SAFE_RETAIN(container);
+	m_player = nullptr;
+	setPower(2);
 }
 
 CRovControler::~CRovControler( void )
@@ -43,8 +42,8 @@ CRovControler::~CRovControler( void )
 	if (client)
 		client->disconnect();
 	CC_SAFE_RELEASE(client);
-	CC_SAFE_RELEASE(_video_container);
 	CC_SAFE_RELEASE(m_status);
+	CC_SAFE_RELEASE(m_player);
 }
 
 void CRovControler::nav_handle(cocos2d::network::SIOClient* client, const stringc& s) {
@@ -166,13 +165,13 @@ void CRovControler::cape_handle(cocos2d::network::SIOClient* client, const strin
 
 void CRovControler::video_start(cocos2d::network::SIOClient* client, const stringc& s)
 {
-	if (!_video_container)
-		return;
+
 	const char* p = _url.c_str() + 7;
 	char buf[64]="http://", *p_buf = buf + 7;
 	while (*p && *p != ':'&&*p != '/')*p_buf++ = *p++;
 	
 	strcpy(p_buf, ":8090/?action=stream");
+
 #if _USE_VIDEO_ > 0
 	auto node = CCStreamVideoPlayer::create(buf, Color4B(255, 255, 255, 255));
 #else
@@ -182,19 +181,28 @@ void CRovControler::video_start(cocos2d::network::SIOClient* client, const strin
 		CC_SAFE_RETAIN(node);
 		node->setName(__CCMJPEG_VIDEO_NAME);
 		node->setPosition(cocos2d::Director::getInstance()->getVisibleOrigin());
-		_video_container->addChild(node, 0);
+		addChild(node, 0);
+		m_player = node;
 	}
 }
 
 void CRovControler::video_end(cocos2d::network::SIOClient* client, const stringc& s)
 {
-	if (!_video_container)
-		return;
-	auto node = _video_container->getChildByName(__CCMJPEG_VIDEO_NAME);
+
+	auto node = getChildByName(__CCMJPEG_VIDEO_NAME);
 	if (node) {
-		_video_container->removeChildByName(__CCMJPEG_VIDEO_NAME);
+		removeChildByName(__CCMJPEG_VIDEO_NAME);
 		CC_SAFE_RELEASE(node);
 	}
+}
+
+bool CRovControler::restartStream()
+{
+	if (m_player != nullptr) {
+		return m_player->restart();
+	}
+
+	return false;
 }
 
 void CRovControler::ControlDelegate::onConnect(cocos2d::network::SIOClient* client)

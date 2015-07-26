@@ -12,12 +12,12 @@ class CMainScene : public cocos2d::Layer
 {
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
-	static cocos2d::Scene* createScene(const char* url,bool show_ctrl);
+	static cocos2d::Scene* createScene(const char* url, bool show_ctrl, const char* _proto);
 
 	virtual ~CMainScene();
 
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
-	virtual bool init(const char*, bool show_ctrl);
+	virtual bool init(const char*, bool show_ctrl, const char* _proto);
     
     // a selector callback
 	//void menuCloseCallback(cocos2d::Ref* pSender);
@@ -25,6 +25,8 @@ public:
 	void endEvent(Ref *pSender);
 
 	void onSettintEvent(Ref *pSender);
+
+	void onRestartVideo(Ref *pSender);
 
 	void onMenuCloseEvent(Ref* pSender);
 
@@ -52,14 +54,14 @@ public:
 
 	void onBtnDiveTouchEvent(Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
 
-	void onJoySticEvent(const cocos2d::Vec2& pos,const cocos2d::Vec2& lastpos);
+	void onJoySticEvent(const cocos2d::Vec2& ,const cocos2d::Vec2& );
 
 	virtual void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
 	virtual void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
     // implement the "static create()" method manually
-	static CMainScene* create(const char* url, bool show_ctrl);
+	static CMainScene* create(const char* url, bool show_ctrl,const char* _proto);
 
 	void Update(float dt);
 

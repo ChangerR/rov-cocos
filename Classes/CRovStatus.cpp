@@ -175,6 +175,8 @@ void CRovStatus::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 
 	sprintf(tmp, "ping:%dms",CRovStatus::_ping);
 	nvgText(_vg, -_contentSize.width / 2, -_contentSize.height / 2 + 16, tmp, NULL);
+	sprintf(tmp, "Power:%d", CRovStatus::_power_level);
+	nvgText(_vg, -_contentSize.width / 2, -_contentSize.height / 2 + 32, tmp, NULL);
 	///////////////////////////////////////////////////
 	nvgEndFrame(_vg);
 	
@@ -485,6 +487,8 @@ float CRovStatus::Inc_FPS()
 
 	return fps;
 }
+
+int CRovStatus::_power_level = 1;
 
 int CRovStatus::_ping = 0;
 float  CRovStatus::fps = 0;

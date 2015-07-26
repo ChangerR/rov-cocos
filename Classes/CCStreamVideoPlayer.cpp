@@ -8,7 +8,8 @@ const stringc jpeg_tex = "/rov_mjpeg_x_x_1";
 CCStreamVideoPlayer::CCStreamVideoPlayer()
 {
 	//m_recv = new CCMjpegStreamReceiver();
-	m_recv = new CCUdpReceiver();
+	//m_recv = new CCUdpReceiver();
+	m_recv = nullptr;
 	_texture = NULL;
 }
 
@@ -28,7 +29,7 @@ CCStreamVideoPlayer::~CCStreamVideoPlayer()
 CCStreamVideoPlayer* CCStreamVideoPlayer::create(const char* url,const Color4B& color)
 {
 	CCStreamVideoPlayer *viwer = new (std::nothrow) CCStreamVideoPlayer();
-	if (viwer&&viwer->m_recv->openReceiver(url)&&viwer->init(color))
+	if (viwer&&viwer->init(url,color))
 	{
 		viwer->m_url = url;
 		viwer->autorelease();
@@ -165,7 +166,7 @@ void CCStreamVideoPlayer::setContentSize(const Size & size)
 	Node::setContentSize(size);
 }
 
-bool CCStreamVideoPlayer::init(const Color4B& color)
+bool CCStreamVideoPlayer::init(const char* url,const Color4B& color)
 {
 	// default blend function
 	_blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
@@ -192,7 +193,17 @@ bool CCStreamVideoPlayer::init(const Color4B& color)
 
 	setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP));
 
-	return true;
+	if (!strncmp("http://", url, 7)) {
+		m_recv = new CCMjpegStreamReceiver;
+	}
+	else if (!strncmp("udp://", url, 6)) {
+		m_recv = new CCUdpReceiver;
+	}
+
+	if (m_recv&&m_recv->openReceiver(url))
+		return true;
+
+	return false;
 }
 
 void CCStreamVideoPlayer::updateColor()
@@ -214,4 +225,14 @@ void CCStreamVideoPlayer::updateColor()
 void CCStreamVideoPlayer::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags)
 {
 	Node::visit(renderer, parentTransform, parentFlags);	
+}
+
+bool CCStreamVideoPlayer::restart()
+{
+	if (m_recv) {
+		m_recv->closeReceiver();
+		return m_recv->openReceiver(m_url.c_str());
+	}
+
+	return false;
 }

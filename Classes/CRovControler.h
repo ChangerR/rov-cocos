@@ -5,7 +5,7 @@
 #include <thread>
 #include "CRovStatus.h"
 #include "IControler.h"
-
+#include "CCStreamVideoPlayer.h"
 typedef float f32;
 
 const f32 ROUNDING_ERROR_f32 = 0.000001f;
@@ -64,12 +64,12 @@ public:
 
 public:
 
-	CRovControler(cocos2d::Layer* container,const stringc& url,int u_time);
+	CRovControler(const stringc& url,int u_time);
 
 	~CRovControler(void);
 
-	static CRovControler* create(cocos2d::Layer* container, const stringc& url, int u_time) {
-		CRovControler* joy = new (std::nothrow)CRovControler(container, url,u_time);
+	static CRovControler* create( const stringc& url, int u_time) {
+		CRovControler* joy = new (std::nothrow)CRovControler( url,u_time);
 		if (joy&&joy->init())
 		{
 			joy->autorelease();
@@ -136,33 +136,70 @@ public:
 		return pos;
 	}
 
-	int getPower() const{
-		return power;
-	}
 
 	void setThrust(int t, int y, int l) {
 		if (t != INVALID_THRUST_ARG)
-			pos.throttle = t * power;
-		if (y != INVALID_THRUST_ARG)
-			pos.yaw =  y * power;
+			pos.throttle = t * power_thru;
+
+		if (y != INVALID_THRUST_ARG) {
+			if (y == 0)
+				pos.yaw = 0.f;
+			else if(abs(pos.throttle) > 0.000001f)
+				pos.yaw = y * yaws / abs(y);
+			else
+				pos.yaw = y * power_thru;
+		}
 		if (l != INVALID_THRUST_ARG)
-			pos.lift = l * power;
+			pos.lift = l * power_vertical;
+
 	}
 
 	void setPower(int f){
-		power = f;
+		power_level = f;
+		
+		if (power_level <= 0)
+			power_level = 1;
+		if (power_level >= 6)
+			power_level = 5;
+		CRovStatus::_power_level = power_level;
+		switch (power_level)
+		{
+		case 1:
+			power_thru = 0.214f;
+			power_vertical = 0.1f;
+			yaws = 0.001f;
+			break;
+		case 2:
+			power_thru = 0.216f;
+			power_vertical = 0.2f;
+			yaws = 0.002f;
+			break;
+		case 3:
+			power_thru = 0.22f;
+			power_vertical = 0.24f;
+			yaws = 0.003f;
+			break;
+		case 4:
+			power_thru = 0.23f;
+			power_vertical = 0.26f;
+			yaws = 0.005f;
+			break;
+		case 5:
+			power_thru = 0.25f;
+			power_vertical = 0.30f;
+			yaws = 0.01f;
+			break;
+		default:
+			break;
+		}
 	}
 
 	void addPower() {
-		if (power >= 1.0f)
-			return;
-		power += 0.05f;
+		setPower(power_level + 1);
 	}
 
 	void decPower() {
-		if (power <= 0.1f)
-			return;
-		power -= 0.05f;
+		setPower(power_level - 1);
 	}
 
 	void stopAll() {
@@ -202,9 +239,7 @@ public:
 		return ttrim;
 	}	
 
-	virtual bool restartStream() {
-		return false;
-	}
+	virtual bool restartStream();
 
 	void nav_handle(cocos2d::network::SIOClient* client, const stringc& s);
 
@@ -231,6 +266,8 @@ public:
 		virtual void onError(cocos2d::network::SIOClient* client, const std::string& data) {
 
 		}
+
+		virtual void fireEventToScript(cocos2d::network::SIOClient* client, const std::string& eventName, const std::string& data){}
 	private:
 		CRovControler* father;
 	};
@@ -239,7 +276,8 @@ private:
 	cocos2d::network::SIOClient* client;
 	Position pos;
 	Position old_pos;
-	int power; 
+	int power_level;
+	float power_thru,power_vertical,yaws; 
 	float vtrim;
 	float ttrim;
 	float tilt;
@@ -249,8 +287,8 @@ private:
 	std::thread *hControl;
 	ControlDelegate m_delegate;
 	CRovStatus* m_status;
+	CCStreamVideoPlayer* m_player;
 	stringc _url;
-	cocos2d::Layer* _video_container;
 };
 
 #endif

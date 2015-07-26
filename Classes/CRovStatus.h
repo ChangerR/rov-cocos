@@ -76,6 +76,7 @@ public:
 	static float Inc_FPS();
 
 	static int _ping;
+	static int _power_level;
 private:
 
 	void drawZero();

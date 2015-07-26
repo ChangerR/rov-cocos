@@ -99,7 +99,12 @@ void CUIJoystick::onTouchEnded(cocos2d::Touch*, cocos2d::Event*)
 
 void CUIJoystick::onTouchCancelled(cocos2d::Touch* touch, cocos2d::Event* event)
 {
-	onTouchEnded(touch, event);
+	_joystick->setPosition(_contentSize / 2);
+
+	if (bool(_handler))
+		_handler(cocos2d::Vec2::ZERO, cocos2d::Vec2::ZERO);
+
+	_joy_pos = cocos2d::Vec2::ZERO;
 }
 
 void CUIJoystick::setJoystickPositionChangeHandler(JoystickHandler handle)
