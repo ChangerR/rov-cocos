@@ -182,7 +182,7 @@ void CRovLoginLayer::endEvent(Ref *pSender)
 
 void CRovLoginLayer::loginEvent(Ref *pSender)
 {
-	Scene* sc = CMainScene::createScene(_ip.c_str(),true,"mjpeg");
+	Scene* sc = CMainScene::createScene(_ip.c_str(),true,"mpegts");
 
 	if (sc)
 	{
@@ -193,7 +193,7 @@ void CRovLoginLayer::loginEvent(Ref *pSender)
 
 void CRovLoginLayer::guestLoginEvent(Ref *pSender)
 {
-	Scene* sc = CMainScene::createScene(_ip.c_str(), false,"mjpeg");
+	Scene* sc = CMainScene::createScene(_ip.c_str(), false,"mpegts");
 	if (sc)
 	{
 		Director::getInstance()->replaceScene(sc);

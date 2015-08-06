@@ -3,7 +3,9 @@
 #include "cocos2d.h"
 #include "stringc.h"
 #include "ui/UIText.h"
+
 struct NVGcontext;
+
 class CRovStatus :
 	public cocos2d::Layer
 {
@@ -21,7 +23,7 @@ public:
 			FTHR = nav.FTHR;
 			return *this;
 		}
-
+	public:
 		float HDGD; //Compass heading in degrees
 		float DEAP; //Depth in meters
 		float ROLL; //Roll in degrees
@@ -40,7 +42,7 @@ public:
 			MATC = cape.MATC; CMNT = cape.CMNT; CMTG = cape.CMTG; CMPD = cape.CMPD;
 			return *this;
 		}
-
+	public:
 		float PRES; //Pressure in millibars
 		float TEMP; //Temperature in C
 		float FMEM; //Free memory on the Arduino in bytes
@@ -62,6 +64,10 @@ public:
 	void updateNavData(navdata& nav);
 
 	void updateCapeDate(capedata& cape);
+
+	bool parseNavData(const char*);
+
+	void setNavData(const char*, const char*);
 
 	bool init(const cocos2d::Size& _si);
 

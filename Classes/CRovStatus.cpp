@@ -7,10 +7,43 @@
 #include <math.h>
 #include "stringc.h"
 
+inline float parse_float(const char* p) {
+	bool isNeg = false;
+	float ret = 0, l = 1.f;
+	if (*p == '-') {
+		isNeg = true;
+		p++;
+	}
+	while (*p&&*p != '.') {
+		if (*p < '0' || *p > '9') {
+			return 0.f;
+		}
+		ret *= 10;
+		ret += *p - '0';
+		p++;
+	}
 
-CRovStatus::CRovStatus() :_status(0), _vg(0)
+	if (*p == '.') {
+		p++;
+	}
+
+	while (*p) {
+		if (*p < '0' || *p > '9') {
+			return 0.f;
+		}
+		l *= 0.1f;
+		ret += (*p - '0')*l;
+		p++;
+	}
+
+	if (isNeg)
+		ret *= -1;
+	return ret;
+}
+
+CRovStatus::CRovStatus() :_status(0), _vg(0), _navdata(), _capedate()
 {
-
+	_navdata.HDGD = 0.f;
 }
 
 
@@ -486,6 +519,77 @@ float CRovStatus::Inc_FPS()
 	}
 
 	return fps;
+}
+
+bool CRovStatus::parseNavData(const char* p)
+{
+	char name[32];
+	char value[32];
+	int offset = 0;
+	int parseState = 0;
+	while (*p&&parseState != -1)
+	{
+		switch (parseState) {
+			
+		case 0:
+			if (*p == '=') {
+				parseState = 1;
+				name[offset] = 0;
+				offset = 0;
+			}else
+				name[offset++] = *p;
+			break;
+		case 1:
+			if (*p == ',') {
+				parseState = 0;
+				value[offset] = 0;
+				offset = 0;
+				setNavData(name, value);
+			}else
+				value[offset++] = *p;
+			break;
+		default:
+			break;
+		}
+		p++;
+	}
+
+	if (parseState != 1)
+		return false;
+
+	value[offset] = 0;
+	setNavData(name, value);
+	return true;
+}
+
+void CRovStatus::setNavData(const char* name, const char* value)
+{
+	float v = parse_float(value);
+
+	if (strcmp("hdgd",name) == 0)
+	{
+		this->_navdata.HDGD = v;
+	}
+	else if (strcmp("roll", name) == 0)
+	{
+		_navdata.ROLL = v;
+	}
+	else if (strcmp("pitch", name) == 0)
+	{
+		_navdata.PITC = v;
+	}
+	else if (strcmp("yaw", name) == 0)
+	{
+		_navdata.YAW = v;
+	}
+	else if (strcmp("depth", name) == 0)
+	{
+		_navdata.DEAP = v;
+	}
+	else if (strcmp("temp", name) == 0)
+	{
+		_capedate.TEMP = v;
+	}
 }
 
 int CRovStatus::_power_level = 1;

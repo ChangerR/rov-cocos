@@ -92,7 +92,7 @@ bool CEntertainmentControler::openControl() {
 }
 
 void CEntertainmentControler::closeControl() {
-	sendCmd("0:::");
+	sendCmd("0:::\r\n");
 	_isRunning = false;
 
 	if(_recv) {
@@ -178,21 +178,22 @@ unsigned int CEntertainmentControler::_recv_thread(CEntertainmentControler* poin
 			
 			while(_inner_getline(msg,str,&wpos) != -1) {
 				if(pointer->_isHandSank) {
-					//CCLOG("recv %s",str);
+//CCLOG("recv %s",str);
 					switch (*str)
 					{
 					case '2':
 						if (!strcmp(str + 4,"stream_on"))
 						{
-							//pointer->onStreamOn();
+							pointer->onStreamOn();
 						}
 						break;
 					case '3':
 						if (!strncmp("pong:", str + 4, 5)) {
-
 							pointer->endPing(str + 9);
-
 						}
+						break;
+					case '7':
+						pointer->_status->parseNavData(str + 4);
 						break;
 					default:
 						break;
@@ -297,7 +298,7 @@ bool CEntertainmentControler::restartStream()
 
 void CEntertainmentControler::setRovStatus(CRovStatus* status)
 {
-
+	_status = status;
 }
 
 void CEntertainmentControler::control_update(float)
@@ -393,6 +394,9 @@ void CEntertainmentControler::endPing(const char* s)
 
 		if (i == _ping_num) {
 			_ping_time = clock() - _start_time;
+
+			_ping_time = _ping_time == 0 ? 1 : _ping_time;
+
 			_ping_set = true;
 		}
 ;
