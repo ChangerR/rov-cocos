@@ -165,7 +165,6 @@ void CRovControler::cape_handle(cocos2d::network::SIOClient* client, const strin
 
 void CRovControler::video_start(cocos2d::network::SIOClient* client, const stringc& s)
 {
-
 	const char* p = _url.c_str() + 7;
 	char buf[64]="http://", *p_buf = buf + 7;
 	while (*p && *p != ':'&&*p != '/')*p_buf++ = *p++;

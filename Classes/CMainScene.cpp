@@ -37,6 +37,8 @@ bool CMainScene::init(const char* ip, bool show_ctrl,const char* _proto)
 		if (strcmp(_proto, "mjpeg") == 0) {
 			stringc url = stringc("http://") + ip;
 			m_rovCtrl = CRovControler::create(url + ":8080/", 200);
+
+			((CRovControler*)m_rovCtrl)->video_start(NULL, "");
 		}else if (strcmp(_proto,"mpegts") == 0)
 		{
 			m_rovCtrl = CEntertainmentControler::create(ip);
